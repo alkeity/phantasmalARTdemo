@@ -1,0 +1,10 @@
+﻿.gallery-container
+{
+    height: 65vh
+}
+
+.art-thumbnail
+{
+    height: 20vh;
+    width: auto;
+}
