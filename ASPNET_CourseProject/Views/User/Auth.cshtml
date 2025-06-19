@@ -1,0 +1,52 @@
+﻿@model ASPNET_CourseProject.Models.DTO.UserDTO
+
+@{
+    ViewData["Title"] = "Join our community";
+}
+
+<div class="container form-container">
+    <ul class="nav nav-pills nav-justified mb-3" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="tab-login" data-bs-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="tab-register" data-bs-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="login" role="tabpanel" aria-labelledby="tab-login">
+            @using (Html.BeginForm("Login", "User", FormMethod.Post))
+            {
+                <div class="form-floating form-outline flex-fill mb-3">
+                    @Html.TextBoxFor(Model => Model.Email, htmlAttributes: new { @class = "form-control", @id = "email-login", @placeholder = "Email" })
+                    @Html.LabelFor(Model => Model.Email, htmlAttributes: new { @class = "form-label", @for="email-login" })
+                </div>
+                <div class="form-floating form-outline flex-fill mb-3">
+                    @Html.PasswordFor(Model => Model.Password, htmlAttributes: new { @class = "form-control", @id = "password-login", @placeholder = "Password" })
+                    @Html.LabelFor(Model => Model.Password, htmlAttributes: new { @class = "form-label", @for = "password-login" })
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-4">Log In</button>
+            }
+        </div>
+
+        <div class="tab-pane" id="register" role="tabpanel" aria-labelledby="tab-register">
+            @using (Html.BeginForm("Register", "User", FormMethod.Post))
+            {
+                <div class="form-floating form-outline flex-fill mb-3">
+                    @Html.TextBoxFor(Model => Model.Email, htmlAttributes: new { @class = "form-control", @id = "email", @placeholder = "Email" })
+                    @Html.LabelFor(Model => Model.Email, htmlAttributes: new { @class = "form-label", @for = "email" })
+                </div>
+                <div class="form-floating form-outline flex-fill mb-3">
+                    @Html.TextBoxFor(Model => Model.Username, htmlAttributes: new { @class = "form-control", @id = "username", @placeholder = "Username" })
+                    @Html.LabelFor(Model => Model.Username, htmlAttributes: new { @class = "form-label", @for = "username" })
+                </div>
+                <div class="form-floating form-outline flex-fill mb-3">
+                    @Html.PasswordFor(Model => Model.Password, htmlAttributes: new { @class = "form-control", @id = "password", @placeholder = "Password" })
+                    @Html.LabelFor(Model => Model.Password, htmlAttributes: new { @class = "form-label", @for = "password" })
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-4">Register</button>
+            }
+        </div>
+    </div>
+</div>

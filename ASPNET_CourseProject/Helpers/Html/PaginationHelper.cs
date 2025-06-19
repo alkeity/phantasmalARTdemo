@@ -46,7 +46,7 @@ namespace ASPNET_CourseProject.Helpers.Html
             ul.InnerHtml.AppendHtml(liNext);
 
             TagBuilder div = new TagBuilder("div");
-            div.Attributes.Add("class", "container-fluid mt-3");
+            div.Attributes.Add("class", "container-fluid mt-1");
             div.InnerHtml.AppendHtml(ul);
 
             using StringWriter sw = new StringWriter();

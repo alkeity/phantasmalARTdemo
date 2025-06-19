@@ -1,10 +1,17 @@
 ﻿.gallery-container
 {
-    height: 65vh
+    height: 75vh
+}
+
+.form-container
+{
+    max-width: 576px;
+    align-content: center;
+    margin-top: 14vh
 }
 
 .art-thumbnail
 {
-    height: 20vh;
+    height: 21.5vh;
     width: auto;
 }

@@ -1,35 +1,60 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ASPNET_CourseProject.Models.DTO;
+using ASPNET_CourseProject.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNET_CourseProject.Controllers
 {
     public class UserController : Controller
     {
+        private IUserService _userService;
+
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
         [HttpGet]
-        public IActionResult Login()
+        [Route("auth")]
+        public IActionResult Auth()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult LoginPost()
+        [Route("auth/login")]
+        public IActionResult Login(UserDTO userInfo)
         {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
+            switch (_userService.ConfirmUser(userInfo)) // TODO maybe better use enums?
+            {
+                case 0:
+                    // login user, redirect to home/profile
+                    break;
+                case 1:
+                    // username wrong, stay on page
+                    break;
+                case 2:
+                    // password wrong, stay on page
+                    break;
+            }
+            return RedirectToAction("Index", "Home"); // stub
         }
 
         [HttpPost]
-        public IActionResult RegisterPost()
+        [Route("auth/register")]
+        public IActionResult Register(UserDTO userInfo)
         {
-            return View();
+            if (_userService.Add(userInfo))
+            {
+                // TODO login and redirect home (or to profile?)
+                return RedirectToAction("Index", "Home");
+            }
+            // TODO return to page with errors
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
-        public IActionResult Profile()
+        [Route("{username}")]
+        public IActionResult Profile(string username)
         {
             return View();
         }

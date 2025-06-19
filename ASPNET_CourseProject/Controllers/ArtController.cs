@@ -5,7 +5,8 @@ namespace ASPNET_CourseProject.Controllers
     public class ArtController : Controller
     {
         [HttpGet]
-        public IActionResult Index()
+        [Route("{username}/gallery/{artTitle}-{artID:Guid}")]
+        public IActionResult ArtDisplay(string username, string artTitle, Guid artID)
         {
             return View();
         }
