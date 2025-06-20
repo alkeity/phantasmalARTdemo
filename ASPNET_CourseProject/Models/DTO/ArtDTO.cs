@@ -4,6 +4,7 @@
     {
         public Guid ID { get; set; }
         public string? FilePath { get; set; }
+        public required UserDTO Author { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
         public DateTime CreatedAt { get; set; }

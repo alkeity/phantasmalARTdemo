@@ -12,6 +12,7 @@ namespace ASPNET_CourseProject
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<IArtService, ArtService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             var app = builder.Build();
 

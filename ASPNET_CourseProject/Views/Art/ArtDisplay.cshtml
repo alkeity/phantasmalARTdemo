@@ -1,0 +1,26 @@
+﻿@model ASPNET_CourseProject.Models.DTO.ArtDTO
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <figure class="mb-4">
+                <img class="img-fluid rounded" src="@Model.FilePath" alt="@Model.Title" />
+            </figure>
+
+            @* Comments will be here *@
+        </div>
+        @* Side widget *@
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header">About</div>
+                <div class="card-body">
+                    <h2 class="fw-bolder mb-1">@Model.Title</h2>
+                    <div class="text-muted fst-italic mb-2">
+                        Posted on @Model.CreatedAt.Day @Model.CreatedAt.Month, @Model.CreatedAt.Year by @Model.Author.Username
+                        </div>
+                    <p class="fs-5 mb-4">@Model.Description</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
