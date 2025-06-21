@@ -6,7 +6,7 @@
 <h1 class="mb-4">Latest submissions</h1>
 
 <div class="gallery-container">
-    @if (Model.Items != null)
+    @if (Model.Items.Count > 0)
     {
         @Html.ArtGallery(Model.Items)
     }

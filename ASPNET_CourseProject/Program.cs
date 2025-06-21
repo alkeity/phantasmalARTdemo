@@ -1,5 +1,7 @@
+using ASPNET_CourseProject.Data;
 using ASPNET_CourseProject.Services;
 using ASPNET_CourseProject.Services.Implementations;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASPNET_CourseProject
 {
@@ -10,6 +12,17 @@ namespace ASPNET_CourseProject
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<AppDbContext>
+                (
+                    options =>
+                    {
+                        string? connStr = builder.Configuration.GetConnectionString("Default") 
+                        ?? throw new MissingFieldException("Failed to get default connection string! Please check your appsettings.");
+                        options.UseSqlServer(connStr, o => o.UseCompatibilityLevel(170));
+                        //options.UseValidationCheckConstraints();
+                    }
+                );
 
             builder.Services.AddScoped<IArtService, ArtService>();
             builder.Services.AddScoped<IUserService, UserService>();

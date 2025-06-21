@@ -8,7 +8,9 @@ namespace ASPNET_CourseProject.Data.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public required Guid ID { get; set; }
+        [StringLength(20, MinimumLength = 3)]
         public required string Username { get; set; } // unique
+        [EmailAddress]
         public required string Email { get; set; } // unique
         public required string Password { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
@@ -16,7 +18,6 @@ namespace ASPNET_CourseProject.Data.Models
         public DateTime LastLogin {  get; set; } = DateTime.Now;
 
         public List<Art> UserArt { get; set; } = new List<Art>();
+        public required UserProfile Profile { get; set; }
     }
 }
-
-// TODO: follows, favourites, profile views
