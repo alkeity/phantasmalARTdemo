@@ -1,6 +1,9 @@
 ﻿using ASPNET_CourseProject.Models.DTO;
+using ASPNET_CourseProject.Models.View;
 using ASPNET_CourseProject.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ASPNET_CourseProject.Controllers
 {
@@ -14,49 +17,65 @@ namespace ASPNET_CourseProject.Controllers
         }
 
         [HttpGet]
-        [Route("auth")]
-        public IActionResult Auth()
+        [Route("login")]
+        public IActionResult LoginGet(AuthViewModel pageModel)
         {
-            return View();
+            return View("/Views/User/Login.cshtml", pageModel);
         }
 
         [HttpPost]
-        [Route("auth/login")]
-        public IActionResult Login(UserDTO userInfo)
+        [Route("login")]
+        public IActionResult Login(AuthViewModel pageModel)
         {
-            switch (_userService.ConfirmUser(userInfo)) // TODO maybe better use enums?
+            List<string>? errors;
+            pageModel.User = _userService.ConfirmUser(pageModel.User, out errors);
+            if (errors != null)
             {
-                case 0:
-                    // login user, redirect to home/profile
-                    break;
-                case 1:
-                    // username wrong, stay on page
-                    break;
-                case 2:
-                    // password wrong, stay on page
-                    break;
+                pageModel.Errors = errors;
+                return View(pageModel);
             }
-            return RedirectToAction("Index", "Home"); // stub
+
+            HttpContext.Session.SetString("UserName", pageModel.User.Username);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        [Route("register")]
+        public IActionResult RegisterGet(AuthViewModel pageModel)
+        {
+            return View("/Views/User/Register.cshtml", pageModel);
+
         }
 
         [HttpPost]
-        [Route("auth/register")]
-        public IActionResult Register(UserDTO userInfo)
+        [Route("register")]
+        public IActionResult Register(AuthViewModel pageModel)
         {
-            if (_userService.Add(userInfo))
+            pageModel.Errors = _userService.Add(pageModel.User);
+            if (pageModel.Errors != null)
             {
-                // TODO login and redirect home (or to profile?)
-                return RedirectToAction("Index", "Home");
+                return View(pageModel);
             }
-            // TODO return to page with errors
+
+            HttpContext.Session.SetString("UserName", pageModel.User.Username);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Route("logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         [Route("{username}")]
-        public IActionResult Profile(string username)
+        public IActionResult Profile(string username, ProfileViewModel pageModel)
         {
-            return View();
+            pageModel.User = _userService.GetByUsername(username);
+            return View(pageModel);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace ASPNET_CourseProject
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSession();
 
             builder.Services.AddDbContext<AppDbContext>
                 (
@@ -24,10 +25,13 @@ namespace ASPNET_CourseProject
                     }
                 );
 
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddScoped<IArtService, ArtService>();
             builder.Services.AddScoped<IUserService, UserService>();
 
             var app = builder.Build();
+
+            app.UseSession();
 
             //app.MapGet("/", () => "Hello World!");
             //app.MapControllers();
