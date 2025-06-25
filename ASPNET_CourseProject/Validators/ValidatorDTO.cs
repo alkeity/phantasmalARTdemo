@@ -3,7 +3,7 @@ using ASPNET_CourseProject.Models.DTO;
 
 namespace ASPNET_CourseProject.Validators
 {
-    public static class ValidatorDBO
+    public static class ValidatorDTO
     {
         public static bool IsValid(UserDTO user, out List<string>? errors)
         {

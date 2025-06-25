@@ -3,6 +3,7 @@
     public class ArtDTO
     {
         public Guid ID { get; set; }
+        public Guid ExternalUUID { get; set; }
         public string? FilePath { get; set; }
         public UserDTO? Author { get; set; }
         public string? Title { get; set; }

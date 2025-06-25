@@ -19,7 +19,7 @@ namespace ASPNET_CourseProject.Services.Implementations
         public List<string>? Add(UserDTO user)
         {
             List<string>? errors = null;
-            if (ValidatorDBO.IsValid(user, out errors))
+            if (ValidatorDTO.IsValid(user, out errors))
             {
                 User newUser = ConvertFromDTO(user);
                 EntityEntry<User> userEntry = _db.Users.Add(newUser);

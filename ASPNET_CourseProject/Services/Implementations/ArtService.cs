@@ -50,6 +50,17 @@ namespace ASPNET_CourseProject.Services.Implementations
             //}
             return page;
         }
+
+        public Page<ArtDTO> GetArt(int curPage, string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void NewArt(ArtDTO art)
+        {
+            throw new NotImplementedException();
+        }
+
         // temp and exists only for view tests until db
         private readonly List<string> linksForTest = new List<string>()
                 {

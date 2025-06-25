@@ -8,6 +8,7 @@ namespace ASPNET_CourseProject.Data.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public required Guid ID { get; set; }
+        public required Guid ExternalUUID { get; set; }
         public required string FilePath { get; set; }
         [StringLength(50, MinimumLength = 3)]
         public required string Title { get; set; }

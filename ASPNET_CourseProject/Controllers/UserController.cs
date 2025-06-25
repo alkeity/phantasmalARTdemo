@@ -37,7 +37,7 @@ namespace ASPNET_CourseProject.Controllers
 
             HttpContext.Session.SetString("UserName", pageModel.User.Username);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home"); // TODO redirect to profile
         }
 
         [HttpGet]
@@ -60,7 +60,7 @@ namespace ASPNET_CourseProject.Controllers
 
             HttpContext.Session.SetString("UserName", pageModel.User.Username);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home"); // TODO redirect to profile
         }
 
         [Route("logout")]
@@ -71,9 +71,10 @@ namespace ASPNET_CourseProject.Controllers
         }
 
         [HttpGet]
-        [Route("{username}")]
+        [Route("{username}/profile")]
         public IActionResult Profile(string username, ProfileViewModel pageModel)
         {
+            Console.WriteLine($"Profile for: {username}");
             pageModel.User = _userService.GetByUsername(username);
             return View(pageModel);
         }
