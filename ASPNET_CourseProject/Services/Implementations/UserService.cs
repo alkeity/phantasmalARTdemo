@@ -62,6 +62,7 @@ namespace ASPNET_CourseProject.Services.Implementations
 
         public UserDTO GetByUsername(string username)
         {
+            Console.WriteLine($"Searching for user: {username}");
             User? user = _db.Users.FirstOrDefault(u => u.Username == username);
             if (user == null) throw new KeyNotFoundException("User with this username was not found.");
             return ConvertToDTO(user);

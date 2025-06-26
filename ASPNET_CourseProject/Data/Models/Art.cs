@@ -7,7 +7,7 @@ namespace ASPNET_CourseProject.Data.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public required Guid ID { get; set; }
+        public Guid ID { get; set; }
         public required Guid ExternalUUID { get; set; }
         public required string FilePath { get; set; }
         [StringLength(50, MinimumLength = 3)]
@@ -19,6 +19,6 @@ namespace ASPNET_CourseProject.Data.Models
 
         [ForeignKey("User")]
         public required Guid UserID { get; set; }
-        public required User User { get; set; }
+        public User User { get; set; }
     }
 }

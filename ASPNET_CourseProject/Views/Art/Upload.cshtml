@@ -4,15 +4,30 @@
 
 @{
     string username = HttpContextAccessor.HttpContext.Session.GetString("UserName");
+    Console.WriteLine($"Accessing Upload page, user {username}");
+    Model.Username = username;
 }
 
 <h1>Upload</h1>
+
+@if (Model.Errors != null)
+{
+    <div class="alert alert-danger">
+        <strong>A problem has been occurred while submitting your data.</strong>
+        <ul>
+            @for (int i = 0; i < Model.Errors.Count; i++)
+            {
+                <li>@Model.Errors[i]</li>
+            }
+        </ul>
+
+    </div>
+}
 
 <div class="container form-container" style="max-width: 50vh">
     @using (Html.BeginForm("Upload", "Art", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="form-outline flex-fill mb-3">
-            @Html.LabelFor(Model => Model.Image, htmlAttributes: new { @class = "form-label", @for = "image-upload" })
             @Html.TextBoxFor(Model => Model.Image, htmlAttributes: new { @type = "file", @class = "form-control form-control-lg", id = "image-upload", required = "required", accept = "image/jpeg,image/png" })
         </div>
         <div class="form-floating form-outline flex-fill mb-3">
@@ -23,8 +38,8 @@
             @Html.TextAreaFor(Model => Model.ArtDTO.Description, htmlAttributes: new { @class = "form-control", id = "descr", placeholder = "Description" })
             @Html.LabelFor(Model => Model.ArtDTO.Description, htmlAttributes: new { @class = "form-label", @for = "title" })
         </div>
-        @Html.HiddenFor(Model => Model.Username, htmlAttributes: new { Value = username })
-        ;
+        @Html.HiddenFor(Model => Model.Username)
+
         <button type="submit" class="btn btn-primary w-100 mb-4">Submit</button>
     }
 </div>
