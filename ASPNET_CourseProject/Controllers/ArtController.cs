@@ -1,7 +1,6 @@
 ﻿using ASPNET_CourseProject.Models.View;
 using ASPNET_CourseProject.Services;
 using ASPNET_CourseProject.Validators;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNET_CourseProject.Controllers
@@ -20,10 +19,22 @@ namespace ASPNET_CourseProject.Controllers
         }
 
         [HttpGet]
-        [Route("{username}/gallery/{artTitle}-{artID:Guid}")]
-        public IActionResult ArtDisplay(string username, string artTitle, Guid artID)
+        [Route("{username}/gallery")]
+        public IActionResult UserGallery(string username, int page = 0)
         {
-            return View();
+            UserGalleryModel pageModel = new UserGalleryModel();
+            pageModel.User = _userService.GetByUsername(username);
+
+            page = Math.Clamp(page, 0, int.MaxValue);
+            pageModel.Art = _artService.GetArt(page, username);
+            return View(pageModel);
+        }
+
+        [HttpGet]
+        [Route("{username}/gallery/{artID:Guid}")]
+        public IActionResult ArtDisplay(string username, Guid artID)
+        {
+            return View(_artService.GetArt(artID));
         }
 
         [HttpGet]
@@ -54,7 +65,7 @@ namespace ASPNET_CourseProject.Controllers
 
                     art.ArtDTO.FilePath = filePath.Replace("wwwroot\\", "");
                     art.ArtDTO.ExternalUUID = externalUUID;
-                    art.ArtDTO.Author = _userService.GetByUsername(art.Username);
+                    art.ArtDTO.Author = art.Username;
                     _artService.NewArt(art.ArtDTO);
                     return RedirectToAction("Index", "Home"); // TODO redirect to uploaded art page
                 }

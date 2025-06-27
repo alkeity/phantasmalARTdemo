@@ -68,6 +68,16 @@ namespace ASPNET_CourseProject.Services.Implementations
             return ConvertToDTO(user);
         }
 
+        public UserProfileDTO GetProfileByUsername(string username)
+        {
+            UserProfile? userProfile = _db.UserProfiles.FirstOrDefault(
+                profile => profile.UserID == _db.Users.FirstOrDefault(user => user.Username == username).ID
+                );
+            if (userProfile == null) throw new KeyNotFoundException($"Profile for user {username} was not found");
+            return ConvertToDTO(userProfile);
+
+        }
+
         private User ConvertFromDTO(UserDTO dto)
         {
             return new User()
@@ -85,6 +95,14 @@ namespace ASPNET_CourseProject.Services.Implementations
                 Username = user.Username,
                 Password = user.Password,
                 Email = user.Email
+            };
+        }
+
+        private UserProfileDTO ConvertToDTO(UserProfile profile)
+        {
+            return new UserProfileDTO()
+            {
+                Description = profile.Description
             };
         }
     }

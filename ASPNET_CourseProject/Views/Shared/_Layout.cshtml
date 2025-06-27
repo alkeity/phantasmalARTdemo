@@ -2,7 +2,7 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
-    bool isAuthorized = HttpContextAccessor.HttpContext.Session.GetString("UserName") != null;
+    string? username = HttpContextAccessor.HttpContext.Session.GetString("UserName");
 }
 
 <!DOCTYPE html>
@@ -33,10 +33,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @if (@isAuthorized)
+                        @if (username != null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="#">Your profile</a>
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="Profile" asp-route-username="@username">Your profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Art" asp-action="UploadGet">Add new art</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="Logout">Logout</a>
                             </li>
                         }
                         else

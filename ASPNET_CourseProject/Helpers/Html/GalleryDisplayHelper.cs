@@ -16,12 +16,12 @@ namespace ASPNET_CourseProject.Helpers.Html
             {
                 TagBuilder img = new TagBuilder("img");
                 //img.Attributes.Add("src", art.FilePath);
-                img.Attributes.Add("src", art.FilePath);
+                img.Attributes.Add("src", $"/{art.FilePath}");
                 img.Attributes.Add("alt", art.Title);
                 img.Attributes.Add("class", "img-fluid mb-2 me-2 art-thumbnail");
 
                 TagBuilder a = new TagBuilder("a");
-                a.Attributes.Add("href", "#"); // TODO links
+                a.Attributes.Add("href", $"/{art.Author}/gallery/{art.ExternalUUID}"); // TODO links
                 a.InnerHtml.AppendHtml(img);
 
                 TagBuilder div = new TagBuilder("div");
