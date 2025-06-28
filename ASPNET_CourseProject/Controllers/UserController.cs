@@ -1,7 +1,10 @@
-﻿using ASPNET_CourseProject.Models.DTO;
+﻿using ASPNET_CourseProject.Models.Containers;
+using ASPNET_CourseProject.Models.DTO;
 using ASPNET_CourseProject.Models.View;
 using ASPNET_CourseProject.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ASPNET_CourseProject.Controllers
 {
@@ -37,7 +40,7 @@ namespace ASPNET_CourseProject.Controllers
 
             HttpContext.Session.SetString("UserName", pageModel.User.Username);
 
-            return RedirectToAction("Index", "Home"); // TODO redirect to profile
+            return RedirectToAction("Profile", "User", new { username = pageModel.User.Username });
         }
 
         [HttpGet]
@@ -60,7 +63,7 @@ namespace ASPNET_CourseProject.Controllers
 
             HttpContext.Session.SetString("UserName", pageModel.User.Username);
 
-            return RedirectToAction("Index", "Home"); // TODO redirect to profile
+            return RedirectToAction("Profile", "User", new { username = pageModel.User.Username });
         }
 
         [Route("logout")]
@@ -72,28 +75,45 @@ namespace ASPNET_CourseProject.Controllers
 
         [HttpGet]
         [Route("{username}/profile")]
-        public IActionResult Profile(string username, ProfileModel pageModel)
+        public IActionResult Profile(string username)
         {
-            Console.WriteLine($"Profile for: {username}");
-            pageModel.User = _userService.GetByUsername(username);
-            pageModel.UserArt = _artService.GetPreviewArt(username);
-            pageModel.Profile = _userService.GetProfileByUsername(username);
-            return View(pageModel);
+            try
+            {
+                ProfileModel pageModel = new ProfileModel();
+                pageModel.User = _userService.GetByUsername(username);
+                pageModel.UserArt = _artService.GetPreviewArt(username);
+                pageModel.Profile = _userService.GetProfileByUsername(username);
+                return View(pageModel);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet]
         [Route("{username}/edit")]
         public IActionResult EditProfileGet(string username)
         {
-            UserProfileDTO profileModel = _userService.GetProfileByUsername(username);
-            return View("/Views/User/EditProfile.cshtml", profileModel);
+            try
+            {
+                FormView<UserProfileDTO> pageModel = new FormView<UserProfileDTO> { Entity = _userService.GetProfileByUsername(username) };
+                return View("/Views/User/EditProfile.cshtml", pageModel);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost]
-        [Route("{username}/edit")]
-        public IActionResult EditProfile(string username, UserProfileDTO profileModel)
+        //[Route("{username}/edit")]
+        [Route("editProfile")] // TODO это еще один костыль
+        public IActionResult EditProfile(FormView<UserProfileDTO> pageModel)
         {
-            return View(profileModel);
+            // TODO error handling
+            _userService.UpdateProfile(pageModel.Entity.Username, pageModel.Entity);
+            return RedirectToAction("Profile", "User", new { pageModel.Entity.Username });
         }
     }
 }

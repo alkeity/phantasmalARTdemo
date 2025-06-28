@@ -78,6 +78,16 @@ namespace ASPNET_CourseProject.Services.Implementations
 
         }
 
+        public void UpdateProfile(string username, UserProfileDTO profile)
+        {
+            UserProfile userProfile = _db.UserProfiles.FirstOrDefault(
+                                      pr => pr.UserID == _db.Users.FirstOrDefault(u => u.Username == username).ID
+                );
+            if (userProfile == null) throw new KeyNotFoundException($"Profile for user {username} was not found");
+            userProfile.Description = profile.Description;
+            _db.SaveChanges();
+        }
+
         private User ConvertFromDTO(UserDTO dto)
         {
             return new User()

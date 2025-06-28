@@ -18,7 +18,7 @@
                          style="width: 150px; z-index: 1">
                     @if (curUser == Model.User.Username)
                     {
-                        <a href="#" class="btn btn-outline-dark text-body" style="z-index: 1;">
+                        <a class="btn btn-outline-dark text-body" style="z-index: 1;" asp-controller="User" asp-action="EditProfileGet" asp-route-username="@Model.User.Username">
                             Edit profile
                         </a>
                     }
