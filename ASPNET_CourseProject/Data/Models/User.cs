@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ASPNET_CourseProject.Data.Models
@@ -8,16 +9,23 @@ namespace ASPNET_CourseProject.Data.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid ID { get; set; }
+        [Required]
         [StringLength(20, MinimumLength = 3)]
         public required string Username { get; set; } // unique
+        [Required]
         [EmailAddress]
         public required string Email { get; set; } // unique
+        [Required]
+        [PasswordPropertyText]
         [StringLength(20, MinimumLength = 7)]
         public required string Password { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt {  get; set; } = DateTime.Now;
         public DateTime LastLogin {  get; set; } = DateTime.Now;
 
+        [ForeignKey("Role")]
+        public required byte RoleID { get; set; } = 1;
+        public Role UserRole { get; set; }
         public List<Art> UserArt { get; set; } = new List<Art>();
         public UserProfile? Profile { get; set; }
     }

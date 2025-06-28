@@ -2,6 +2,7 @@
 using ASPNET_CourseProject.Data.Models;
 using ASPNET_CourseProject.Models.DTO;
 using ASPNET_CourseProject.Validators;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -22,6 +23,7 @@ namespace ASPNET_CourseProject.Services.Implementations
             if (ValidatorDTO.IsValid(user, out errors))
             {
                 User newUser = ConvertFromDTO(user);
+                newUser.RoleID = 1;
                 EntityEntry<User> userEntry = _db.Users.Add(newUser);
                 if (userEntry == null)
                 {
@@ -29,9 +31,20 @@ namespace ASPNET_CourseProject.Services.Implementations
                     errors.Add("Something went wrong with registration.");
                     return errors;
                 }
+
                 UserProfile newProfile = new UserProfile() { User = userEntry.Entity, UserID = userEntry.Entity.ID };
                 _db.UserProfiles.Add(newProfile);
-                _db.SaveChanges();
+
+                try
+                {
+                    _db.SaveChanges();
+                }
+                catch (SqlException)
+                {
+                    errors = new List<string>();
+                    errors.Add("Something went wrong with registration.");
+                    return errors;
+                }
             }
             return errors;
         }
@@ -60,11 +73,11 @@ namespace ASPNET_CourseProject.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public UserDTO GetByUsername(string username)
+        public UserDTO? GetByUsername(string username)
         {
             Console.WriteLine($"Searching for user: {username}");
             User? user = _db.Users.FirstOrDefault(u => u.Username == username);
-            if (user == null) throw new KeyNotFoundException("User with this username was not found.");
+            if (user == null) return null;
             return ConvertToDTO(user);
         }
 
@@ -94,7 +107,8 @@ namespace ASPNET_CourseProject.Services.Implementations
             {
                 Email = dto.Email,
                 Username = dto.Username,
-                Password = dto.Password
+                Password = dto.Password,
+                RoleID = dto.Role
             };
         }
 
@@ -104,7 +118,8 @@ namespace ASPNET_CourseProject.Services.Implementations
             {
                 Username = user.Username,
                 Password = user.Password,
-                Email = user.Email
+                Email = user.Email,
+                Role = user.RoleID
             };
         }
 

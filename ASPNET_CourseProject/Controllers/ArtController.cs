@@ -1,4 +1,5 @@
-﻿using ASPNET_CourseProject.Models.View;
+﻿using ASPNET_CourseProject.Filters;
+using ASPNET_CourseProject.Models.View;
 using ASPNET_CourseProject.Services;
 using ASPNET_CourseProject.Validators;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +38,7 @@ namespace ASPNET_CourseProject.Controllers
             return View(_artService.GetArt(artID));
         }
 
+        [UserAuthFilter]
         [HttpGet]
         [Route("new")]
         public IActionResult UploadGet(ArtUploadModel art)
@@ -44,6 +46,7 @@ namespace ASPNET_CourseProject.Controllers
             return View("/Views/Art/Upload.cshtml", art);
         }
 
+        [UserAuthFilter]
         [HttpPost]
         [Route("new")]
         public IActionResult Upload(ArtUploadModel art)

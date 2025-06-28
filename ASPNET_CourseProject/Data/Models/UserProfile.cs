@@ -6,6 +6,7 @@ namespace ASPNET_CourseProject.Data.Models
     public class UserProfile
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid ID { get; set; }
 
         [ForeignKey("User")]

@@ -1,4 +1,5 @@
 using ASPNET_CourseProject.Data;
+using ASPNET_CourseProject.Filters;
 using ASPNET_CourseProject.Services;
 using ASPNET_CourseProject.Services.Implementations;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace ASPNET_CourseProject
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddScoped<IArtService, ArtService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<UserAuthFilter>();
 
             var app = builder.Build();
 

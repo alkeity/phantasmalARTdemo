@@ -8,6 +8,7 @@ namespace ASPNET_CourseProject.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Art> Arts { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -22,6 +23,7 @@ namespace ASPNET_CourseProject.Data
             modelBuilder.Entity<User>().Property(user => user.CreatedAt).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<User>().Property(user => user.UpdatedAt).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<User>().Property(user => user.LastLogin).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<User>().Property(user => user.RoleID).HasDefaultValue(1);
 
             // Art model
             modelBuilder.Entity<Art>().Property(art => art.CreatedAt).HasDefaultValueSql("GETDATE()");

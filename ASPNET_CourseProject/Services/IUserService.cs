@@ -7,7 +7,7 @@ namespace ASPNET_CourseProject.Services
     {
         public User GetById(Guid id);
         public User GetByEmail(string email);
-        public UserDTO GetByUsername(string username);
+        public UserDTO? GetByUsername(string username);
         public UserDTO ConfirmUser(UserDTO userInfo, out List<string>? errors);
         public List<string>? Add(UserDTO user);
         public UserProfileDTO GetProfileByUsername(string username);

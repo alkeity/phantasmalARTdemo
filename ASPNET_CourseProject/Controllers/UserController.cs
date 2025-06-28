@@ -1,10 +1,10 @@
-﻿using ASPNET_CourseProject.Models.Containers;
+﻿using ASPNET_CourseProject.Filters;
+using ASPNET_CourseProject.Models.Containers;
 using ASPNET_CourseProject.Models.DTO;
 using ASPNET_CourseProject.Models.View;
 using ASPNET_CourseProject.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ASPNET_CourseProject.Controllers
 {
@@ -66,6 +66,7 @@ namespace ASPNET_CourseProject.Controllers
             return RedirectToAction("Profile", "User", new { username = pageModel.User.Username });
         }
 
+        [UserAuthFilter]
         [Route("logout")]
         public IActionResult Logout()
         {
@@ -91,6 +92,7 @@ namespace ASPNET_CourseProject.Controllers
             }
         }
 
+        [UserSpecificFilter]
         [HttpGet]
         [Route("{username}/edit")]
         public IActionResult EditProfileGet(string username)
@@ -108,7 +110,7 @@ namespace ASPNET_CourseProject.Controllers
 
         [HttpPost]
         //[Route("{username}/edit")]
-        [Route("editProfile")] // TODO это еще один костыль
+        [Route("editProfile")]
         public IActionResult EditProfile(FormView<UserProfileDTO> pageModel)
         {
             // TODO error handling
