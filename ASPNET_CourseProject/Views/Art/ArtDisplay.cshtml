@@ -1,4 +1,11 @@
-﻿@model ASPNET_CourseProject.Models.DTO.ArtDTO
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model ASPNET_CourseProject.Models.DTO.ArtDTO
+
+@{
+    string? username = HttpContextAccessor.HttpContext.Session.GetString("UserName");
+}
 
 <div class="container mt-5">
     <div class="row">
@@ -17,8 +24,14 @@
                     <h2 class="fw-bolder mb-1">@Model.Title</h2>
                     <div class="text-muted fst-italic mb-2">
                         Posted on @Model.CreatedAt.Day @Model.CreatedAt.Month, @Model.CreatedAt.Year by <a class="nav-link text-dark" asp-controller="User" asp-action="Profile" asp-route-username="@Model.Author">@Model.Author</a>
-                        </div>
+                    </div>
                     <p class="fs-5 mb-4">@Model.Description</p>
+                    @if (username == Model.Author)
+                    {
+                        <a class="btn btn-primary w-100 mb-4" asp-controller="Art" asp-action="UpdateGet" asp-route-username="@Model.Author" asp-route-externalUUID="@Model.ExternalUUID">
+                            Edit
+                        </a>
+                    }
                 </div>
             </div>
         </div>

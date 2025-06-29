@@ -2,6 +2,7 @@
 using ASPNET_CourseProject.Models.Containers;
 using ASPNET_CourseProject.Data.Models;
 using ASPNET_CourseProject.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASPNET_CourseProject.Services.Implementations
 {
@@ -12,6 +13,17 @@ namespace ASPNET_CourseProject.Services.Implementations
         {
             _db = db;
         }
+
+        public void DeleteArt(Guid externalGuid)
+        {
+            // delete both db entry and image
+            // later replace it with a flag in db entry
+            Art? art = _db.Arts.FirstOrDefault(a => a.ExternalUUID == externalGuid);
+            File.Delete(Path.Combine("wwwroot", art.FilePath));
+            _db.Arts.Remove(art);
+            _db.SaveChanges();
+        }
+
         public Page<ArtDTO> GetArt(int curPage)
         {
             Page<ArtDTO> page = new Page<ArtDTO>();
@@ -19,7 +31,8 @@ namespace ASPNET_CourseProject.Services.Implementations
             page.Items = new List<ArtDTO>();
             page.MaxPage = (int)Math.Ceiling((double)(_db.Arts.Count() / page.ItemsPerPage));
 
-            List<Art> arts = _db.Arts.OrderByDescending(art => art.CreatedAt)
+            List<Art> arts = _db.Arts.Include(art => art.User)
+                                     .OrderByDescending(art => art.CreatedAt)
                                      .Skip(curPage * page.ItemsPerPage)
                                      .Take(page.ItemsPerPage)
                                      .ToList();
@@ -35,11 +48,13 @@ namespace ASPNET_CourseProject.Services.Implementations
             Page<ArtDTO> page = new Page<ArtDTO>();
             page.CurPage = curPage;
             page.Items = new List<ArtDTO>();
-            page.MaxPage = (int)Math.Ceiling((double)(_db.Arts.Count() / page.ItemsPerPage));
             Guid userID = _db.Users.FirstOrDefault(user => user.Username == username).ID;
+            page.MaxPage = (int)Math.Ceiling((double)(_db.Arts.Where(art => art.UserID == userID).Count() / page.ItemsPerPage));
 
             List<Art> arts = _db.Arts.Where(art => art.UserID == userID)
+                                     .Include(art => art.User)
                                      .OrderByDescending(art => art.CreatedAt)
+                                     .Skip(curPage * page.ItemsPerPage)
                                      .Take(page.ItemsPerPage)
                                      .ToList();
             foreach (Art art in arts) page.Items.Add(FromEntity(art));
@@ -49,8 +64,8 @@ namespace ASPNET_CourseProject.Services.Implementations
 
         public ArtDTO GetArt(Guid externalGuid)
         {
-            Art? art = _db.Arts.FirstOrDefault(art => art.ExternalUUID == externalGuid);
-            if (art == null) throw new FileNotFoundException("Art with this GUID was not found on server");
+            Art? art = _db.Arts.Include(art => art.User).FirstOrDefault(art => art.ExternalUUID == externalGuid);
+            if (art == null) throw new KeyNotFoundException("Art with this GUID was not found on server");
             return FromEntity(art);
 
         }
@@ -83,6 +98,17 @@ namespace ASPNET_CourseProject.Services.Implementations
             _db.SaveChanges();
         }
 
+        public void UpdateArt(ArtDTO art)
+        {
+            Art? artEntry = _db.Arts.FirstOrDefault(a => a.ExternalUUID == art.ExternalUUID);
+            if (artEntry == null) throw new KeyNotFoundException("Art with this GUID was not found on server");
+
+            artEntry.Title = art.Title;
+            artEntry.Description = art.Description;
+            artEntry.UpdatedAt = DateTime.Now;
+            _db.SaveChanges();
+        }
+
         private ArtDTO FromEntity(Art art)
         {
             return new ArtDTO()
@@ -90,7 +116,7 @@ namespace ASPNET_CourseProject.Services.Implementations
                 Title = art.Title,
                 FilePath=art.FilePath,
                 ExternalUUID = art.ExternalUUID,
-                Author = _db.Users.FirstOrDefault(user => user.ID == art.UserID).Username,
+                Author = art.User.Username,
                 Description = art.Description,
                 CreatedAt = art.CreatedAt,
                 UpdatedAt = art.UpdatedAt

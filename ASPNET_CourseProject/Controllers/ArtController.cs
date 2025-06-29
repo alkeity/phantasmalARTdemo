@@ -1,8 +1,12 @@
-﻿using ASPNET_CourseProject.Filters;
+﻿using ASPNET_CourseProject.Data.Models;
+using ASPNET_CourseProject.Filters;
+using ASPNET_CourseProject.Models.Containers;
+using ASPNET_CourseProject.Models.DTO;
 using ASPNET_CourseProject.Models.View;
 using ASPNET_CourseProject.Services;
 using ASPNET_CourseProject.Validators;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ASPNET_CourseProject.Controllers
 {
@@ -70,11 +74,50 @@ namespace ASPNET_CourseProject.Controllers
                     art.ArtDTO.ExternalUUID = externalUUID;
                     art.ArtDTO.Author = art.Username;
                     _artService.NewArt(art.ArtDTO);
-                    return RedirectToAction("Index", "Home"); // TODO redirect to uploaded art page
+                    return RedirectToAction("ArtDisplay", "Art", new { username = art.Username, artID = externalUUID });
                 }
             }
             art.Errors = errors;
             return View(art);
+        }
+
+        [UserSpecificFilter]
+        [HttpGet]
+        [Route("{username}/gallery/{externalUUID:Guid}/update")]
+        public IActionResult UpdateGet(string username, Guid externalUUID)
+        {
+            try
+            {
+                FormView<ArtDTO> pageModel = new FormView<ArtDTO>()
+                {
+                    Entity = _artService.GetArt(externalUUID)
+                };
+                return View("/Views/Art/Update.cshtml", pageModel);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        [UserSpecificFilter]
+        [HttpPost]
+        [Route("{username}/gallery/{externalUUID:Guid}/update")]
+        public IActionResult Update(string username, Guid externalUUID, FormView<ArtDTO> pageModel)
+        {
+            // TODO error handling
+            _artService.UpdateArt(pageModel.Entity);
+            return RedirectToAction("ArtDisplay", "Art", new { username = username, artID = externalUUID });
+        }
+
+        [UserSpecificFilter]
+        [HttpGet]
+        [Route("{username}/gallery/{externalUUID:Guid}/delete")]
+        public IActionResult Delete(string username, Guid externalUUID)
+        {
+            // TODO confirmation and error handling
+            _artService.DeleteArt(externalUUID);
+            return RedirectToAction("Profile", "User", new { username});
         }
     }
 }

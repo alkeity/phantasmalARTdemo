@@ -22,7 +22,7 @@ namespace ASPNET_CourseProject.Helpers.Html
                 liPrev.Attributes.Add("class", "page-item disabled");
             }
             TagBuilder aPrev = new TagBuilder("a");
-            aPrev.Attributes.Add("href", $"/?page={curPage - 1}");
+            aPrev.Attributes.Add("href", $"?page={curPage - 1}");
             aPrev.Attributes.Add("class", "page-link");
             aPrev.InnerHtml.Append("<");
             liPrev.InnerHtml.AppendHtml(aPrev);
@@ -39,7 +39,7 @@ namespace ASPNET_CourseProject.Helpers.Html
                 liNext.Attributes.Add("class", "page-item disabled");
             }
             TagBuilder aNext = new TagBuilder("a");
-            aNext.Attributes.Add("href", $"/?page={curPage + 1}");
+            aNext.Attributes.Add("href", $"?page={curPage + 1}");
             aNext.Attributes.Add("class", "page-link");
             aNext.InnerHtml.Append(">");
             liNext.InnerHtml.AppendHtml(aNext);
