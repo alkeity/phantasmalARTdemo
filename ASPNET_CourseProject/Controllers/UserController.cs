@@ -1,9 +1,9 @@
-﻿using ASPNET_CourseProject.Filters;
+﻿using System.Net.Mail;
+using ASPNET_CourseProject.Filters;
 using ASPNET_CourseProject.Models.Containers;
 using ASPNET_CourseProject.Models.DTO;
 using ASPNET_CourseProject.Models.View;
 using ASPNET_CourseProject.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNET_CourseProject.Controllers
@@ -38,6 +38,17 @@ namespace ASPNET_CourseProject.Controllers
                 return View(pageModel);
             }
 
+            try
+            {
+                MailAddress email = new MailAddress(pageModel.User.Email);
+            }
+            catch (FormatException)
+            {
+                pageModel.Errors = new List<string>();
+                pageModel.Errors.Add("Invalid email address");
+                return View(pageModel);
+            }
+
             HttpContext.Session.SetString("UserName", pageModel.User.Username);
 
             return RedirectToAction("Profile", "User", new { username = pageModel.User.Username });
@@ -58,6 +69,17 @@ namespace ASPNET_CourseProject.Controllers
             pageModel.Errors = _userService.Add(pageModel.User);
             if (pageModel.Errors != null)
             {
+                return View(pageModel);
+            }
+
+            try
+            {
+                MailAddress email = new MailAddress(pageModel.User.Email);
+            }
+            catch (FormatException)
+            {
+                pageModel.Errors = new List<string>();
+                pageModel.Errors.Add("Invalid email address");
                 return View(pageModel);
             }
 
