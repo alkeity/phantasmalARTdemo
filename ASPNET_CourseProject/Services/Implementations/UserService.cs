@@ -2,7 +2,6 @@
 using ASPNET_CourseProject.Data.Models;
 using ASPNET_CourseProject.Models.DTO;
 using ASPNET_CourseProject.Validators;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -40,12 +39,12 @@ namespace ASPNET_CourseProject.Services.Implementations
                 {
                     _db.SaveChanges();
                 }
-                catch (SqlException)
-                {
-                    errors = new List<string>();
-                    errors.Add("Something went wrong with registration.");
-                    return errors;
-                }
+                //catch (SqlException)
+                //{
+                //    errors = new List<string>();
+                //    errors.Add("Something went wrong with registration.");
+                //    return errors;
+                //}
                 catch (DbUpdateException)
                 {
                     errors = new List<string>();

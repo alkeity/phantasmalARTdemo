@@ -21,7 +21,7 @@ namespace ASPNET_CourseProject
                     {
                         string? connStr = builder.Configuration.GetConnectionString("Default") 
                         ?? throw new MissingFieldException("Failed to get default connection string! Please check your appsettings.");
-                        options.UseSqlServer(connStr, o => o.UseCompatibilityLevel(170));
+                        options.UseNpgsql(connStr);
                         //options.UseValidationCheckConstraints();
                     }
                 );

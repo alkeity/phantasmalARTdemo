@@ -20,14 +20,14 @@ namespace ASPNET_CourseProject.Data
             // User model
             modelBuilder.Entity<User>().HasIndex(user => user.Username).IsUnique();
             modelBuilder.Entity<User>().HasIndex(user => user.Email).IsUnique();
-            modelBuilder.Entity<User>().Property(user => user.CreatedAt).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<User>().Property(user => user.UpdatedAt).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<User>().Property(user => user.LastLogin).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<User>().Property(user => user.CreatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<User>().Property(user => user.UpdatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<User>().Property(user => user.LastLogin).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<User>().Property(user => user.RoleID).HasDefaultValue(1);
 
             // Art model
-            modelBuilder.Entity<Art>().Property(art => art.CreatedAt).HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<Art>().Property(art => art.UpdatedAt).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Art>().Property(art => art.CreatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<Art>().Property(art => art.UpdatedAt).HasDefaultValueSql("NOW()");
         }
     }
 }
