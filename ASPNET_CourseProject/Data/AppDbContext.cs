@@ -1,4 +1,5 @@
 ﻿using ASPNET_CourseProject.Data.Models;
+using EntityFramework.Exceptions.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASPNET_CourseProject.Data
@@ -13,6 +14,11 @@ namespace ASPNET_CourseProject.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
             //Database.EnsureCreated();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseExceptionProcessor();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
