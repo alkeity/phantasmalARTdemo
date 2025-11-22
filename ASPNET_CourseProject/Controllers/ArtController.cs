@@ -12,15 +12,17 @@ namespace ASPNET_CourseProject.Controllers
 {
     public class ArtController : Controller
     {
-        IArtService _artService;
-        IUserService _userService;
-        readonly string _tmpFolder;
+        private IArtService _artService;
+        private IUserService _userService;
+        private IHttpContextAccessor _contextAccessor;
+        private readonly string _tmpFolder;
 
-        public ArtController(IArtService artService, IUserService userService, IConfiguration config)
+        public ArtController(IArtService artService, IUserService userService, IConfiguration config, IHttpContextAccessor contextAccessor)
         {
             _artService = artService;
             _userService = userService;
             _tmpFolder = config.GetValue<string>("TempImageStorage");
+            _contextAccessor = contextAccessor;
         }
 
         [HttpGet]
@@ -55,6 +57,7 @@ namespace ASPNET_CourseProject.Controllers
         [Route("new")]
         public IActionResult Upload(ArtUploadModel art)
         {
+            string? username = _contextAccessor.HttpContext.Session.GetString("UserName");
             List<string>? errors = null;
             if (ValidatorDTO.IsValid(art.ArtDTO, out errors))
             {
@@ -72,9 +75,9 @@ namespace ASPNET_CourseProject.Controllers
 
                     art.ArtDTO.FilePath = filePath.Replace("wwwroot\\", "");
                     art.ArtDTO.ExternalUUID = externalUUID;
-                    art.ArtDTO.Author = art.Username;
+                    art.ArtDTO.Author = username;
                     _artService.NewArt(art.ArtDTO);
-                    return RedirectToAction("ArtDisplay", "Art", new { username = art.Username, artID = externalUUID });
+                    return RedirectToAction("ArtDisplay", "Art", new { username = username, artID = externalUUID });
                 }
             }
             art.Errors = errors;
@@ -88,7 +91,7 @@ namespace ASPNET_CourseProject.Controllers
         {
             try
             {
-                FormView<ArtDTO> pageModel = new FormView<ArtDTO>()
+                BaseFormView<ArtDTO> pageModel = new BaseFormView<ArtDTO>()
                 {
                     Entity = _artService.GetArt(externalUUID)
                 };
@@ -103,7 +106,7 @@ namespace ASPNET_CourseProject.Controllers
         [UserSpecificFilter]
         [HttpPost]
         [Route("{username}/gallery/{externalUUID:Guid}/update")]
-        public IActionResult Update(string username, Guid externalUUID, FormView<ArtDTO> pageModel)
+        public IActionResult Update(string username, Guid externalUUID, BaseFormView<ArtDTO> pageModel)
         {
             // TODO error handling
             _artService.UpdateArt(pageModel.Entity);

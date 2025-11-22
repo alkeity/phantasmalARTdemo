@@ -27,7 +27,7 @@
         }
 
         <div class="tab-pane active" id="register" role="tabpanel" aria-labelledby="tab-register">
-            @using (Html.BeginForm("Register", "User", FormMethod.Post))
+            @using (Html.BeginForm("Register", "Auth", FormMethod.Post))
             {
                 <div class="form-floating form-outline flex-fill mb-3">
                     @Html.TextBoxFor(Model => Model.User.Email, htmlAttributes: new { @class = "form-control", @id = "email", placeholder = "Email", required = "required" })

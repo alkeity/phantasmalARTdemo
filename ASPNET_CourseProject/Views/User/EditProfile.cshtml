@@ -2,11 +2,7 @@
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
-@model ASPNET_CourseProject.Models.Containers.FormView<UserProfileDTO>
-
-@{
-    Model.Entity.Username = HttpContextAccessor.HttpContext.Session.GetString("UserName");
-}
+@model ASPNET_CourseProject.Models.Containers.BaseFormView<UserProfileDTO>
 
 <h1>Edit profile</h1>
 
@@ -31,7 +27,6 @@
             @Html.TextAreaFor(Model => Model.Entity.Description, htmlAttributes: new { @class = "form-control", id = "descr", placeholder = "Description", rows = 3 })
             @Html.LabelFor(Model => Model.Entity.Description, htmlAttributes: new { @class = "form-label", @for = "descr" })
         </div>
-        @Html.HiddenFor(Model => Model.Entity.Username)
 
         <button type="submit" class="btn btn-primary w-100 mb-4">Submit</button>
     }

@@ -19,14 +19,14 @@ namespace ASPNET_CourseProject.Data.Models
         [PasswordPropertyText]
         [StringLength(20, MinimumLength = 7)]
         public required string Password { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime UpdatedAt {  get; set; } = DateTime.Now;
-        public DateTime LastLogin {  get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt {  get; set; } = DateTime.UtcNow;
+        public DateTime LastLogin {  get; set; } = DateTime.UtcNow;
 
         [ForeignKey("Role")]
         public required byte RoleID { get; set; } = 1;
-        public Role UserRole { get; set; }
-        public List<Art> UserArt { get; set; } = new List<Art>();
+        public Role? UserRole { get; set; }
+        public IList<Art> UserArt { get; set; } = [];
         public UserProfile? Profile { get; set; }
     }
 }

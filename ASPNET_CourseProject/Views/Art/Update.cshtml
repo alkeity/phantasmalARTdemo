@@ -1,7 +1,7 @@
 ﻿@using ASPNET_CourseProject.Models.DTO
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-@model ASPNET_CourseProject.Models.Containers.FormView<ArtDTO>
+@model ASPNET_CourseProject.Models.Containers.BaseFormView<ArtDTO>
 
 <h1>Edit art</h1>
 
@@ -30,8 +30,7 @@
             @Html.TextAreaFor(Model => Model.Entity.Description, htmlAttributes: new { @class = "form-control", id = "descr", placeholder = "Description", rows = 3 })
             @Html.LabelFor(Model => Model.Entity.Description, htmlAttributes: new { @class = "form-label", @for = "title" })
         </div>
-        @Html.HiddenFor(Model => Model.Entity.Author)
-        @Html.HiddenFor(Model => Model.Entity.ExternalUUID)
+        @Html.HiddenFor(Model => Model.Entity.ExternalUUID) // move that to controller or add more checks
 
         <button type="submit" class="btn btn-primary w-100 mb-4">Submit</button>
     }

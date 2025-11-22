@@ -19,14 +19,16 @@ namespace ASPNET_CourseProject
                 (
                     options =>
                     {
-                        string? connStr = builder.Configuration.GetConnectionString("Default") 
-                        ?? throw new MissingFieldException("Failed to get default connection string! Please check your appsettings.");
+                        string connStr = builder.Configuration.GetConnectionString("Default") 
+                        ?? throw new MissingFieldException(
+                            "Failed to get default connection string! Please check your appsettings."
+                            );
                         options.UseNpgsql(connStr);
                         //options.UseValidationCheckConstraints();
                     }
                 );
 
-            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IArtService, ArtService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<UserAuthFilter>();

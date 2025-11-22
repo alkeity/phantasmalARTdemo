@@ -10,6 +10,6 @@ namespace ASPNET_CourseProject.Data.Models
         [Required]
         public required string RoleName { get; set; }
 
-        public List<User> Users { get; set; } = new List<User>();
+        public IList<User> Users { get; set; } = [];
     }
 }

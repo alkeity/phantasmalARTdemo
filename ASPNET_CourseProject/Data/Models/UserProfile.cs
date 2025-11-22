@@ -11,7 +11,7 @@ namespace ASPNET_CourseProject.Data.Models
 
         [ForeignKey("User")]
         public required Guid UserID { get; set; }
-        public required User User { get; set; }
+        public User? User { get; set; }
         public string? Description { get; set; }
 
     }
