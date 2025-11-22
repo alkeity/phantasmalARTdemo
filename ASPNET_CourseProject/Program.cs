@@ -3,6 +3,7 @@ using ASPNET_CourseProject.Filters;
 using ASPNET_CourseProject.Services;
 using ASPNET_CourseProject.Services.Implementations;
 using Microsoft.EntityFrameworkCore;
+using Minio;
 
 namespace ASPNET_CourseProject
 {
@@ -15,6 +16,7 @@ namespace ASPNET_CourseProject
             builder.Services.AddControllersWithViews();
             builder.Services.AddSession();
 
+            // database
             builder.Services.AddDbContext<AppDbContext>
                 (
                     options =>
@@ -26,6 +28,21 @@ namespace ASPNET_CourseProject
                         options.UseNpgsql(connStr);
                         //options.UseValidationCheckConstraints();
                     }
+                );
+
+            // object storage
+            // TODO exceptions
+            builder.Services.AddMinio(
+                configureClient => configureClient
+                .WithEndpoint(
+                    builder.Configuration.GetSection("ObjectStorage").GetValue<string>("Endpoint")
+                    )
+                .WithCredentials(
+                    builder.Configuration.GetSection("ObjectStorage").GetValue<string>("Username"),
+                    builder.Configuration.GetSection("ObjectStorage").GetValue<string>("Password")
+                    )
+                .WithSSL(false)
+                .Build()
                 );
 
             builder.Services.AddHttpContextAccessor();
