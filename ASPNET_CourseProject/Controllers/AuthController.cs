@@ -19,7 +19,7 @@ namespace ASPNET_CourseProject.Controllers
         [Route("login")]
         public IActionResult LoginGet(AuthModel pageModel)
         {
-            return View("/Views/User/Login.cshtml", pageModel);
+            return View("/Views/Auth/Login.cshtml", pageModel);
         }
 
         [HttpPost]
@@ -54,7 +54,7 @@ namespace ASPNET_CourseProject.Controllers
         [Route("register")]
         public IActionResult RegisterGet(AuthModel pageModel)
         {
-            return View("/Views/User/Register.cshtml", pageModel);
+            return View("/Views/Auth/Register.cshtml", pageModel);
 
         }
 
