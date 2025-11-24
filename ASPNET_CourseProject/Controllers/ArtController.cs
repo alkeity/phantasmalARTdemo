@@ -1,12 +1,10 @@
-﻿using ASPNET_CourseProject.Data.Models;
-using ASPNET_CourseProject.Filters;
+﻿using ASPNET_CourseProject.Filters;
 using ASPNET_CourseProject.Models.Containers;
 using ASPNET_CourseProject.Models.DTO;
 using ASPNET_CourseProject.Models.View;
 using ASPNET_CourseProject.Services;
 using ASPNET_CourseProject.Validators;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ASPNET_CourseProject.Controllers
 {
@@ -14,15 +12,23 @@ namespace ASPNET_CourseProject.Controllers
     {
         private IArtService _artService;
         private IUserService _userService;
+        IStorageService _storageService;
         private IHttpContextAccessor _contextAccessor;
-        private readonly string _tmpFolder;
+        private readonly string _storagePath;
 
-        public ArtController(IArtService artService, IUserService userService, IConfiguration config, IHttpContextAccessor contextAccessor)
+        public ArtController(
+            IArtService artService, IUserService userService, 
+            IStorageService storageService, IHttpContextAccessor contextAccessor, 
+            IConfiguration config)
         {
             _artService = artService;
             _userService = userService;
-            _tmpFolder = config.GetValue<string>("TempImageStorage");
+            _storageService = storageService;
             _contextAccessor = contextAccessor;
+            _storagePath = Path.Combine(
+                config.GetSection("ObjectStorage").GetValue<string>("Endpoint"),
+                config.GetSection("ObjectStorage").GetValue<string>("BucketName")
+                );
         }
 
         [HttpGet]
@@ -57,23 +63,27 @@ namespace ASPNET_CourseProject.Controllers
         [Route("new")]
         public IActionResult Upload(ArtUploadModel art)
         {
+            // TODO rewrite this controller
+            // also i feel like there's too much stuff going on for a controller??
             string? username = _contextAccessor.HttpContext.Session.GetString("UserName");
             List<string>? errors = null;
             if (ValidatorDTO.IsValid(art.ArtDTO, out errors))
             {
-                if (art.Image != null) // TODO move to IFileStorageService or smth, this is very tmp and bad bc static files instead of storage
+                Console.WriteLine("Art valid");
+                if (art.Image != null)
                 {
+                    Console.WriteLine("Img not null");
                     Guid externalUUID = Guid.NewGuid();
                     string title = String.Concat(art.ArtDTO.Title.Where(char.IsLetterOrDigit));
-                    string filePath = Path.Combine(
-                        _tmpFolder, $"{Convert.ToString(externalUUID)}-{title}{Path.GetExtension(art.Image.FileName)}"
-                        );
-                    using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+                    string fileName = $"{Convert.ToString(externalUUID)}-{title}{Path.GetExtension(art.Image.FileName)}";
+                    using (Stream stream = art.Image.OpenReadStream())
                     {
-                        art.Image.CopyTo(fileStream);
+                        _storageService.UploadArt(fileName, stream);
                     }
-
-                    art.ArtDTO.FilePath = filePath.Replace("wwwroot\\", "");
+                    // TODO there must be a better way to keep the art paths? but so far that's the only way i found,
+                    // everything else is temporary paths
+                    // maybe should check the way to pull art out of the storage with some info, not by actual path
+                    art.ArtDTO.FilePath = Path.Combine($"http://{_storagePath}", "art", fileName);
                     art.ArtDTO.ExternalUUID = externalUUID;
                     art.ArtDTO.Author = username;
                     _artService.NewArt(art.ArtDTO);

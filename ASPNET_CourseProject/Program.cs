@@ -48,6 +48,7 @@ namespace ASPNET_CourseProject
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IArtService, ArtService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IStorageService, StorageService>();
             builder.Services.AddScoped<UserAuthFilter>();
 
             var app = builder.Build();

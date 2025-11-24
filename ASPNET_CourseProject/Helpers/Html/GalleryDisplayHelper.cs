@@ -16,7 +16,7 @@ namespace ASPNET_CourseProject.Helpers.Html
             {
                 TagBuilder img = new TagBuilder("img");
                 //img.Attributes.Add("src", art.FilePath);
-                img.Attributes.Add("src", $"/{art.FilePath}");
+                img.Attributes.Add("src", $"{art.FilePath}");
                 img.Attributes.Add("alt", art.Title);
                 img.Attributes.Add("class", "img-fluid mb-2 me-2 art-thumbnail");
 
