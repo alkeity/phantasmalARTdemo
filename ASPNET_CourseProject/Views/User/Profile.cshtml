@@ -49,7 +49,14 @@
                     <p class="lead fw-normal mb-0">Recent submissions</p>
                     <p class="mb-0"><a class="text-muted" asp-controller="Art" asp-action="UserGallery" asp-route-username="@Model.User.Username">See all</a></p>
                 </div>
-                @Html.ArtGallery(Model.UserArt)
+                @if (Model.UserArt != null)
+                {
+                    @Html.ArtGallery(Model.UserArt)
+                }
+                else
+                {
+                    <p>This gallery is empty.</p>
+                }
             </div>
             <div class="col">
                 <div class="mb-5  text-body">

@@ -16,6 +16,7 @@ namespace ASPNET_CourseProject.Data.Models
         public string? Description { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; } = false;
 
         [ForeignKey("User")]
         public required Guid UserID { get; set; }

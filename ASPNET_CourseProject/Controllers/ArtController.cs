@@ -35,6 +35,7 @@ namespace ASPNET_CourseProject.Controllers
         [Route("{username}/gallery")]
         public IActionResult UserGallery(string username, int page = 0)
         {
+            // TODO check if user exists, redirect to 404 if not
             UserGalleryModel pageModel = new UserGalleryModel();
             pageModel.User = _userService.GetByUsername(username);
 
@@ -47,7 +48,14 @@ namespace ASPNET_CourseProject.Controllers
         [Route("{username}/gallery/{artID:Guid}")]
         public IActionResult ArtDisplay(string username, Guid artID)
         {
-            return View(_artService.GetArt(artID));
+            try
+            {
+                return View(_artService.GetArt(artID));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
         }
 
         [UserAuthFilter]
@@ -129,8 +137,15 @@ namespace ASPNET_CourseProject.Controllers
         public IActionResult Delete(string username, Guid externalUUID)
         {
             // TODO confirmation and error handling
-            _artService.DeleteArt(externalUUID);
-            return RedirectToAction("Profile", "User", new { username});
+            try
+            {
+                _artService.DeleteArt(externalUUID);
+                return RedirectToAction("Profile", "User", new { username });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
         }
     }
 }

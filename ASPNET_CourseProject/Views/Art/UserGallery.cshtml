@@ -49,6 +49,10 @@
             {
                 @Html.ArtGallery(Model.Art.Items)
             }
+            else
+            {
+                <p>This gallery is empty.</p>
+            }
 
             @if (Model.Art.MaxPage > 0)
             {

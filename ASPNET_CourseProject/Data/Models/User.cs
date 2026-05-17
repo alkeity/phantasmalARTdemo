@@ -22,6 +22,8 @@ namespace ASPNET_CourseProject.Data.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt {  get; set; } = DateTime.UtcNow;
         public DateTime LastLogin {  get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; } = false;
+        public bool IsBanned { get; set; } = false;
 
         [ForeignKey("Role")]
         public required byte RoleID { get; set; } = 1;

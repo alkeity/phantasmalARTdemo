@@ -3,6 +3,7 @@ using ASPNET_CourseProject.Models.Containers;
 using ASPNET_CourseProject.Data.Models;
 using ASPNET_CourseProject.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace ASPNET_CourseProject.Services.Implementations
 {
@@ -14,13 +15,14 @@ namespace ASPNET_CourseProject.Services.Implementations
             _db = db;
         }
 
+        // Soft delete
         public void DeleteArt(Guid externalGuid)
         {
-            // delete both db entry and image
-            // later replace it with a flag in db entry
-            Art? art = _db.Arts.FirstOrDefault(a => a.ExternalUUID == externalGuid);
-            File.Delete(Path.Combine("wwwroot", art.FilePath));
-            _db.Arts.Remove(art);
+            Art? artEntry = _db.Arts.FirstOrDefault(a => a.ExternalUUID == externalGuid);
+            if (artEntry == null) throw new KeyNotFoundException($"Art with GUID {externalGuid} was not found on server");
+            else if (artEntry.IsDeleted) throw new KeyNotFoundException($"Art with GUID {externalGuid} was already deleted");
+            artEntry.IsDeleted = true;
+            artEntry.UpdatedAt = DateTime.UtcNow;
             _db.SaveChanges();
         }
 
@@ -31,7 +33,8 @@ namespace ASPNET_CourseProject.Services.Implementations
             page.Items = new List<ArtDTO>();
             page.MaxPage = (int)Math.Ceiling((double)(_db.Arts.Count() / page.ItemsPerPage));
 
-            List<Art> arts = _db.Arts.Include(art => art.User)
+            List<Art> arts = _db.Arts.Where(art => !art.IsDeleted)
+                                     .Include(art => art.User)
                                      .OrderByDescending(art => art.CreatedAt)
                                      .Skip(curPage * page.ItemsPerPage)
                                      .Take(page.ItemsPerPage)
@@ -51,7 +54,7 @@ namespace ASPNET_CourseProject.Services.Implementations
             Guid userID = _db.Users.FirstOrDefault(user => user.Username == username).ID;
             page.MaxPage = (int)Math.Ceiling((double)(_db.Arts.Where(art => art.UserID == userID).Count() / page.ItemsPerPage));
 
-            List<Art> arts = _db.Arts.Where(art => art.UserID == userID)
+            List<Art> arts = _db.Arts.Where(art => art.UserID == userID && !art.IsDeleted)
                                      .Include(art => art.User)
                                      .OrderByDescending(art => art.CreatedAt)
                                      .Skip(curPage * page.ItemsPerPage)
@@ -65,15 +68,20 @@ namespace ASPNET_CourseProject.Services.Implementations
         public ArtDTO GetArt(Guid externalGuid)
         {
             Art? art = _db.Arts.Include(art => art.User).FirstOrDefault(art => art.ExternalUUID == externalGuid);
-            if (art == null) throw new KeyNotFoundException("Art with this GUID was not found on server");
+            if (art == null) throw new KeyNotFoundException($"Art with GUID {externalGuid} was not found on server");
+            else if (art.IsDeleted) throw new KeyNotFoundException($"Art with GUID {externalGuid} was deleted");
             return FromEntity(art);
 
         }
 
+        // Get preview art for user's profile
+        //TODO - something with amount, make it configurable outside ig
         public List<ArtDTO> GetPreviewArt(string username, int amount = 5)
         {
             List<Art> query = _db.Arts.Where(
-                art => art.UserID == _db.Users.FirstOrDefault(user => user.Username == username).ID
+                art => 
+                art.UserID == _db.Users.FirstOrDefault(user => user.Username == username).ID
+                && !art.IsDeleted
                 ).OrderByDescending(art => art.CreatedAt).Take(amount).ToList();
 
             List<ArtDTO> result = new List<ArtDTO>();
@@ -100,12 +108,13 @@ namespace ASPNET_CourseProject.Services.Implementations
 
         public void UpdateArt(ArtDTO art)
         {
+            // TODO - add update for file
             Art? artEntry = _db.Arts.FirstOrDefault(a => a.ExternalUUID == art.ExternalUUID);
             if (artEntry == null) throw new KeyNotFoundException("Art with this GUID was not found on server");
 
-            artEntry.Title = art.Title;
+            artEntry.Title = art.Title == null ? "Untitled" : art.Title;
             artEntry.Description = art.Description;
-            artEntry.UpdatedAt = DateTime.Now;
+            artEntry.UpdatedAt = DateTime.UtcNow;
             _db.SaveChanges();
         }
 
@@ -119,7 +128,8 @@ namespace ASPNET_CourseProject.Services.Implementations
                 Author = art.User.Username,
                 Description = art.Description,
                 CreatedAt = art.CreatedAt,
-                UpdatedAt = art.UpdatedAt
+                UpdatedAt = art.UpdatedAt,
+                IsDeleted = art.IsDeleted
             };
         }
     }

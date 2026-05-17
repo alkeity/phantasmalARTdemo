@@ -30,10 +30,13 @@ namespace ASPNET_CourseProject.Data
             modelBuilder.Entity<User>().Property(user => user.UpdatedAt).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<User>().Property(user => user.LastLogin).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<User>().Property(user => user.RoleID).HasDefaultValue(1);
+            modelBuilder.Entity<User>().Property(user => user.IsDeleted).HasDefaultValue(false);
+            modelBuilder.Entity<User>().Property(user => user.IsBanned).HasDefaultValue(false);
 
             // Art model
             modelBuilder.Entity<Art>().Property(art => art.CreatedAt).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<Art>().Property(art => art.UpdatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<Art>().Property(art => art.IsDeleted).HasDefaultValue(false);
         }
     }
 }
