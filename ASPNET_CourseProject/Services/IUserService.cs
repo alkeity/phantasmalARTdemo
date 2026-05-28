@@ -12,6 +12,7 @@ namespace ASPNET_CourseProject.Services
         public List<string>? Add(UserDTO user);
         public UserProfileDTO GetProfileByUsername(string username);
         public void UpdateProfile(string username, UserProfileDTO profile);
+        public void Update(UserDTO user);
 
     }
 }

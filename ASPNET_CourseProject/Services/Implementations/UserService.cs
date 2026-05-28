@@ -28,7 +28,7 @@ namespace ASPNET_CourseProject.Services.Implementations
                 if (userEntry == null)
                 {
                     errors = new List<string>();
-                    errors.Add("Something went wrong with registration.");
+                    errors.Add("Something went wrong with your registration.");
                     return errors;
                 }
 
@@ -48,7 +48,7 @@ namespace ASPNET_CourseProject.Services.Implementations
                 catch (DbUpdateException)
                 {
                     errors = new List<string>();
-                    errors.Add("E-mail or username you want to use is already taken");
+                    errors.Add("E-mail or username you want to use is already taken.");
                     return errors;
                 }
             }
@@ -61,6 +61,8 @@ namespace ASPNET_CourseProject.Services.Implementations
             User? user = _db.Users.FirstOrDefault(u => u.Email == userInfo.Email);
             if (user == null) errors.Add("The email you entered does not belong to any account.");
             else if (user.Password != userInfo.Password) errors.Add("The password you entered is incorrect.");
+            else if (user.IsDeleted) errors.Add("The email you entered belongs to deleted account. Contact administration to restore it.");
+            else if (user.IsBanned) errors.Add("The email you entered belongs to banned account. Contact administration to object it.");
             else
             {
                 errors = null;
@@ -95,6 +97,23 @@ namespace ASPNET_CourseProject.Services.Implementations
             if (userProfile == null) throw new KeyNotFoundException($"Profile for user {username} was not found");
             return ConvertToDTO(userProfile);
 
+        }
+
+        public void Update(UserDTO userDTO)
+        {
+            // TODO pass hash
+            // find user and update it
+
+            User user = _db.Users.FirstOrDefault(u => u.Username == userDTO.Username);
+            if (user == null) throw new KeyNotFoundException($"User {userDTO.Username} not found");
+
+            user.Username = userDTO.Username;
+            user.Password = userDTO.Password;
+            user.Email = userDTO.Email;
+            user.IsDeleted = userDTO.IsDeleted;
+            user.IsBanned = userDTO.IsBanned;
+            user.UpdatedAt = DateTime.UtcNow;
+            _db.SaveChanges();
         }
 
         public void UpdateProfile(string username, UserProfileDTO profile)

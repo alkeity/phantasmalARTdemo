@@ -62,9 +62,41 @@ namespace ASPNET_CourseProject.Controllers
         public IActionResult EditProfile(BaseFormView<UserProfileDTO> pageModel)
         {
             // TODO error handling and checks
+            try
+            {
+                string? username = _contextAccessor.HttpContext.Session.GetString("UserName");
+                _userService.UpdateProfile(username, pageModel.Entity);
+                return RedirectToAction("Profile", "User", new { username });
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet]
+        [Route("delete_account")]
+        public IActionResult Delete()
+        {
+            // TODO error handling and checks
             string? username = _contextAccessor.HttpContext.Session.GetString("UserName");
-            _userService.UpdateProfile(username, pageModel.Entity);
-            return RedirectToAction("Profile", "User", new { username });
+            Console.WriteLine($"CALLED DELETE: User {username} requests deletion");
+            try
+            {
+                // get user and swap isDeleted
+                UserDTO user = _userService.GetByUsername(username);
+                Console.WriteLine($"User {username} {(user != null ? "" : "does not")} exists");
+                if (user != null)
+                {
+                    user.IsDeleted = true;
+                    _userService.Update(user);
+                }
+                return RedirectToAction("Logout", "Auth");
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }
