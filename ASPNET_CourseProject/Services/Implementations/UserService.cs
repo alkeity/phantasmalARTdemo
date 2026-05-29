@@ -130,10 +130,14 @@ namespace ASPNET_CourseProject.Services.Implementations
         {
             return new User()
             {
-                Email = dto.Email,
                 Username = dto.Username,
                 Password = dto.Password,
-                RoleID = dto.Role
+                Email = dto.Email,
+                RoleID = dto.Role,
+                CreatedAt = dto.CreatedAt,
+                UpdatedAt = dto.UpdatedAt,
+                IsDeleted = dto.IsDeleted,
+                IsBanned = dto.IsBanned
             };
         }
 
@@ -144,7 +148,11 @@ namespace ASPNET_CourseProject.Services.Implementations
                 Username = user.Username,
                 Password = user.Password,
                 Email = user.Email,
-                Role = user.RoleID
+                Role = user.RoleID,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt,
+                IsDeleted = user.IsDeleted,
+                IsBanned = user.IsBanned
             };
         }
 

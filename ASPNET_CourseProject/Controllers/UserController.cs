@@ -29,6 +29,10 @@ namespace ASPNET_CourseProject.Controllers
             {
                 ProfileModel pageModel = new ProfileModel();
                 pageModel.User = _userService.GetByUsername(username);
+                if (pageModel.User.IsDeleted)
+                {
+                    return NotFound();
+                }
                 pageModel.UserArt = _artService.GetPreviewArt(username);
                 pageModel.Profile = _userService.GetProfileByUsername(username);
                 return View(pageModel);
