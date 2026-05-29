@@ -54,6 +54,7 @@ namespace ASPNET_CourseProject
             var app = builder.Build();
 
             app.UseSession();
+            app.UseStatusCodePagesWithReExecute("/not-found");
 
             //app.MapGet("/", () => "Hello World!");
             //app.MapControllers();
