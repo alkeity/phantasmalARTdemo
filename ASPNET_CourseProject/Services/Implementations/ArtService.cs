@@ -115,6 +115,7 @@ namespace ASPNET_CourseProject.Services.Implementations
             artEntry.Title = art.Title == null ? "Untitled" : art.Title;
             artEntry.Description = art.Description;
             artEntry.UpdatedAt = DateTime.UtcNow;
+            if (art.FilePath != null) artEntry.FilePath = art.FilePath;
             _db.SaveChanges();
         }
 

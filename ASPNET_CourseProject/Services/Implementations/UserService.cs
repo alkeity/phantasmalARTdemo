@@ -83,7 +83,7 @@ namespace ASPNET_CourseProject.Services.Implementations
 
         public UserDTO? GetByUsername(string username)
         {
-            Console.WriteLine($"Searching for user: {username}");
+            Console.WriteLine($"USER: Searching for user: {username}");
             User? user = _db.Users.FirstOrDefault(u => u.Username == username);
             if (user == null) return null;
             return ConvertToDTO(user);
@@ -94,7 +94,7 @@ namespace ASPNET_CourseProject.Services.Implementations
             UserProfile? userProfile = _db.UserProfiles.FirstOrDefault(
                 profile => profile.UserID == _db.Users.FirstOrDefault(user => user.Username == username).ID
                 );
-            if (userProfile == null) throw new KeyNotFoundException($"Profile for user {username} was not found");
+            if (userProfile == null) throw new KeyNotFoundException($"USER: Profile for user {username} was not found");
             return ConvertToDTO(userProfile);
 
         }

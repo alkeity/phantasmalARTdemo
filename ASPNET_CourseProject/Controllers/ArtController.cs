@@ -1,10 +1,12 @@
-﻿using ASPNET_CourseProject.Filters;
+﻿using ASPNET_CourseProject.Data.Models;
+using ASPNET_CourseProject.Filters;
 using ASPNET_CourseProject.Models.Containers;
 using ASPNET_CourseProject.Models.DTO;
 using ASPNET_CourseProject.Models.View;
 using ASPNET_CourseProject.Services;
 using ASPNET_CourseProject.Validators;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ASPNET_CourseProject.Controllers
 {
@@ -109,9 +111,9 @@ namespace ASPNET_CourseProject.Controllers
         {
             try
             {
-                BaseFormView<ArtDTO> pageModel = new BaseFormView<ArtDTO>()
+                ArtUploadModel pageModel = new ArtUploadModel()
                 {
-                    Entity = _artService.GetArt(externalUUID)
+                    ArtDTO = _artService.GetArt(externalUUID)
                 };
                 return View("/Views/Art/Update.cshtml", pageModel);
             }
@@ -121,14 +123,32 @@ namespace ASPNET_CourseProject.Controllers
             }
         }
 
-        [UserSpecificFilter]
         [HttpPost]
         [Route("{username}/gallery/{externalUUID:Guid}/update")]
-        public IActionResult Update(string username, Guid externalUUID, BaseFormView<ArtDTO> pageModel)
+        public IActionResult Update(string username, Guid externalUUID, ArtUploadModel art)
         {
-            // TODO error handling
-            _artService.UpdateArt(pageModel.Entity);
-            return RedirectToAction("ArtDisplay", "Art", new { username = username, artID = externalUUID });
+            List<string>? errors = null;
+            if (ValidatorDTO.IsValid(art.ArtDTO, out errors))
+            {
+                Console.WriteLine("Art update valid");
+                if (art.Image != null)
+                {
+                    Console.WriteLine("Img not null");
+                    string title = String.Concat(art.ArtDTO.Title.Where(char.IsLetterOrDigit));
+                    string fileName = $"{Convert.ToString(externalUUID)}-{title}{Path.GetExtension(art.Image.FileName)}";
+                    using (Stream stream = art.Image.OpenReadStream())
+                    {
+                        _storageService.UploadArt(fileName, stream);
+                    }
+                    art.ArtDTO.FilePath = Path.Combine($"http://{_storagePath}", "art", fileName);
+                }
+                art.ArtDTO.ExternalUUID = externalUUID;
+                art.ArtDTO.Author = username;
+                _artService.UpdateArt(art.ArtDTO);
+                return RedirectToAction("ArtDisplay", "Art", new { username = username, artID = externalUUID });
+            }
+            art.Errors = errors;
+            return View(art);
         }
 
         [UserSpecificFilter]
