@@ -1,0 +1,23 @@
+﻿@using phantasmalARTdemo
+@using phantasmalARTdemo.Helpers.Html
+@using phantasmalARTdemo.Models.DTO
+
+@model phantasmalARTdemo.Models.Containers.Page<ArtDTO>
+
+<h1 class="mb-4">Latest submissions</h1>
+
+<div class="gallery-container">
+    @if (Model.Items.Count > 0)
+    {
+        @Html.ArtGallery(Model.Items)
+    }
+    else
+    {
+        <p>Oops! No arts yet.</p>
+    }
+</div>
+
+ @if (Model.MaxPage > 0) 
+ { 
+     @Html.PaginationSimple(Model.CurPage, Model.MaxPage) 
+ } 

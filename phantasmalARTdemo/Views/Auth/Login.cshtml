@@ -1,0 +1,44 @@
+﻿@model phantasmalARTdemo.Models.View.AuthModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container form-container" id="auth-tabs">
+    <ul class="nav nav-pills nav-justified mb-3" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="tab-login" data-bs-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        @if (Model.Errors != null)
+        {
+            <div class="alert alert-danger">
+                <strong>A problem has been occurred while submitting your data.</strong>
+                <ul>
+                    @for (int i = 0; i < Model.Errors.Count; i++)
+                    {
+                        <li>@Model.Errors[i]</li>
+                    }
+                </ul>
+                
+            </div>
+        }
+
+        <div class="tab-pane active" id="login" role="tabpanel" aria-labelledby="tab-login">
+            @using (Html.BeginForm("Login", "Auth", FormMethod.Post))
+            {
+                <div class="form-floating form-outline flex-fill mb-3">
+                    @Html.TextBoxFor(Model => Model.User.Email, htmlAttributes: new { @class = "form-control", id = "email-login", placeholder = "Email", required = "required" })
+                    @Html.LabelFor(Model => Model.User.Email, htmlAttributes: new { @class = "form-label", @for="email-login" })
+                </div>
+                <div class="form-floating form-outline flex-fill mb-3">
+                    @Html.PasswordFor(Model => Model.User.Password, htmlAttributes: new { @class = "form-control", id = "password-login", placeholder = "Password", required = "required" })
+                    @Html.LabelFor(Model => Model.User.Password, htmlAttributes: new { @class = "form-label", @for = "password-login" })
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-4">Log In</button>
+            }
+        </div>
+    </div>
+</div>

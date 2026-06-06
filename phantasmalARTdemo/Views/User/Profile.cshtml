@@ -1,0 +1,79 @@
+﻿@using Microsoft.AspNetCore.Http
+@using phantasmalARTdemo
+@using phantasmalARTdemo.Helpers.Html
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model phantasmalARTdemo.Models.View.ProfileModel
+
+@{
+    string? curUser = HttpContextAccessor.HttpContext.Session.GetString("UserName");
+}
+
+<div class="container-fluid h-100">
+    <div>
+        <div class="row d-flex justify-content-center">
+            <div class="d-flex flex-row" style="height:130px;">
+                <div class="ms-4 mt-2 d-flex flex-column" style="width: 150px;">
+                    <img src="https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png"
+                         alt="@Model.User.Username" class="img-fluid img-thumbnail mb-2"
+                         style="width: 150px; z-index: 1">
+                    @if (curUser == Model.User.Username)
+                    {
+                        <a class="btn btn-outline-dark text-body" style="z-index: 1;" asp-controller="User" asp-action="EditProfileGet" asp-route-username="@Model.User.Username">
+                            Edit profile
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" class="btn btn-outline-dark text-body" style="z-index: 1;">
+                            Follow
+                        </a>
+                    }
+                </div>
+                <div class="ms-4" style="margin-top: 60px;">
+                    <h5>@Model.User.Username</h5>
+                </div>
+            </div>
+            <div class="p-4 text-black bg-body-tertiary">
+                <div class="d-flex justify-content-end text-center py-1 text-body">
+                    <div>
+                        <p class="mb-1 h5"></p>
+                        <p class="small text-muted mb-0">Profile</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center card-body p-4 text-black">
+            <div class="col">
+                <div class="d-flex justify-content-between align-items-center mb-4 text-body">
+                    <p class="lead fw-normal mb-0">Recent submissions</p>
+                    <p class="mb-0"><a class="text-muted" asp-controller="Art" asp-action="UserGallery" asp-route-username="@Model.User.Username">See all</a></p>
+                </div>
+                @if (Model.UserArt != null)
+                {
+                    @Html.ArtGallery(Model.UserArt)
+                }
+                else
+                {
+                    <p>This gallery is empty.</p>
+                }
+            </div>
+            <div class="col">
+                <div class="mb-5  text-body">
+                    <p class="lead fw-normal mb-1">About</p>
+                    <div class="p-4 bg-body-tertiary">
+                        @if (Model.Profile.Description != null)
+                        {
+                            <p class="font-italic mb-1">@Model.Profile.Description</p>
+                        }
+                        else
+                        {
+                            <p class="font-italic mb-1">Nothing added yet.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
