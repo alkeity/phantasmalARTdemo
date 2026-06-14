@@ -37,6 +37,11 @@ namespace phantasmalARTdemo.Data
             modelBuilder.Entity<Art>().Property(art => art.CreatedAt).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<Art>().Property(art => art.UpdatedAt).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<Art>().Property(art => art.IsDeleted).HasDefaultValue(false);
+
+            // ArtComment model
+            modelBuilder.Entity<Art>().Property(art => art.CreatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<Art>().Property(art => art.UpdatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<Art>().Property(art => art.IsDeleted).HasDefaultValue(false);
         }
     }
 }

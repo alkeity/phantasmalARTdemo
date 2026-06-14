@@ -1,20 +1,16 @@
-﻿using PhantasmalARTdemo.Data.Models;
+﻿using phantasmalARTdemo.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace phantasmalARTdemo.Data.Models
+namespace PhantasmalARTdemo.Data.Models
 {
-    public class Art
+    public class ArtComment
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid ID { get; set; }
-        public required Guid ExternalUUID { get; set; }
-        public required string FilePath { get; set; }
-        [StringLength(50, MinimumLength = 3)]
-        public required string Title { get; set; }
-        [StringLength(20000, MinimumLength = 3)]
-        public string? Description { get; set; }
+        [StringLength(2000, MinimumLength = 1)]
+        public required string Text { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public bool IsDeleted { get; set; } = false;
@@ -22,6 +18,8 @@ namespace phantasmalARTdemo.Data.Models
         [ForeignKey("User")]
         public required Guid UserID { get; set; }
         public User? User { get; set; }
-        public IList<ArtComment> Comments { get; set; } = [];
+        [ForeignKey("Art")]
+        public required Guid ArtID { get; set; }
+        public Art? Art { get; set; }
     }
 }

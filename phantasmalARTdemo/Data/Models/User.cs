@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using PhantasmalARTdemo.Data.Models;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -29,6 +30,7 @@ namespace phantasmalARTdemo.Data.Models
         public required byte RoleID { get; set; } = 1;
         public Role? UserRole { get; set; }
         public IList<Art> UserArt { get; set; } = [];
+        public IList<ArtComment> Comments { get; set; } = [];
         public UserProfile? Profile { get; set; }
     }
 }
