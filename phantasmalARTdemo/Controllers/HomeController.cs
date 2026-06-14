@@ -36,5 +36,11 @@ namespace phantasmalARTdemo.Controllers
             }
             return View(model);
         }
+
+        [Route("terms-and-conditions")]
+        public IActionResult TermsConditions()
+        {
+            return View();
+        }
     }
 }
