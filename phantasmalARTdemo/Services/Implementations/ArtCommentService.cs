@@ -16,8 +16,8 @@ namespace PhantasmalARTdemo.Services.Implementations
         public void DeleteComment(Guid id)
         {
             ArtComment? comment = _db.ArtComments.FirstOrDefault(c => c.ID == id);
-            if (comment == null) throw new KeyNotFoundException($"Art with GUID {id} was not found on server");
-            else if (comment.IsDeleted) throw new KeyNotFoundException($"Art with GUID {id} was already deleted");
+            if (comment == null) throw new KeyNotFoundException($"Comment with GUID {id} was not found on server");
+            else if (comment.IsDeleted) throw new KeyNotFoundException($"Comment with GUID {id} was already deleted");
             comment.IsDeleted = true;
             comment.UpdatedAt = DateTime.UtcNow;
             _db.SaveChanges();
@@ -25,7 +25,13 @@ namespace PhantasmalARTdemo.Services.Implementations
 
         public void EditComment(ArtCommentDTO comment)
         {
-            throw new NotImplementedException();
+            ArtComment? cmt = _db.ArtComments.FirstOrDefault(c => c.ID == comment.ID);
+            if (cmt == null) throw new KeyNotFoundException($"Comment with GUID {comment.ID} was not found on server");
+
+            cmt.Text = comment.Text != null ? comment.Text : "";
+            cmt.UpdatedAt = DateTime.UtcNow;
+
+            _db.SaveChanges();
         }
 
         public Page<ArtCommentDTO> GetComments(Guid artID, int curPage)

@@ -108,7 +108,6 @@ namespace PhantasmalARTdemo.Services.Implementations
 
         public void UpdateArt(ArtDTO art)
         {
-            // TODO - add update for file
             Art? artEntry = _db.Arts.FirstOrDefault(a => a.ExternalUUID == art.ExternalUUID);
             if (artEntry == null) throw new KeyNotFoundException("Art with this GUID was not found on server");
 
