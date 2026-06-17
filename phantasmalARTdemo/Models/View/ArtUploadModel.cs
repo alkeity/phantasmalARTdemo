@@ -1,6 +1,6 @@
-﻿using phantasmalARTdemo.Models.DTO;
+﻿using PhantasmalARTdemo.Models.DTO;
 
-namespace phantasmalARTdemo.Models.View
+namespace PhantasmalARTdemo.Models.View
 {
     public class ArtUploadModel
     {

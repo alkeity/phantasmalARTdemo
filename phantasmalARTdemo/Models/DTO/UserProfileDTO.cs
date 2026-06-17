@@ -1,6 +1,6 @@
-﻿using phantasmalARTdemo.Data.Models;
+﻿using PhantasmalARTdemo.Data.Models;
 
-namespace phantasmalARTdemo.Models.DTO
+namespace PhantasmalARTdemo.Models.DTO
 {
     public class UserProfileDTO
     {

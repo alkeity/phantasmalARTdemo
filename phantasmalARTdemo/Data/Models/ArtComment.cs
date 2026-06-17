@@ -1,4 +1,4 @@
-﻿using phantasmalARTdemo.Data.Models;
+﻿using PhantasmalARTdemo.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

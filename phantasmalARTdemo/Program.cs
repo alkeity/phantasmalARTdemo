@@ -1,11 +1,11 @@
-using phantasmalARTdemo.Data;
-using phantasmalARTdemo.Filters;
-using phantasmalARTdemo.Services;
-using phantasmalARTdemo.Services.Implementations;
+using PhantasmalARTdemo.Data;
+using PhantasmalARTdemo.Filters;
+using PhantasmalARTdemo.Services;
+using PhantasmalARTdemo.Services.Implementations;
 using Microsoft.EntityFrameworkCore;
 using Minio;
 
-namespace phantasmalARTdemo
+namespace PhantasmalARTdemo
 {
     public class Program
     {

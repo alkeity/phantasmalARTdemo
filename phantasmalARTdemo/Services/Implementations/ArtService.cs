@@ -1,11 +1,11 @@
-﻿using phantasmalARTdemo.Models.DTO;
-using phantasmalARTdemo.Models.Containers;
-using phantasmalARTdemo.Data.Models;
-using phantasmalARTdemo.Data;
+﻿using PhantasmalARTdemo.Models.DTO;
+using PhantasmalARTdemo.Models.Containers;
+using PhantasmalARTdemo.Data.Models;
+using PhantasmalARTdemo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
-namespace phantasmalARTdemo.Services.Implementations
+namespace PhantasmalARTdemo.Services.Implementations
 {
     public class ArtService : IArtService
     {

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace phantasmalARTdemo.Data.Models
+namespace PhantasmalARTdemo.Data.Models
 {
     public class User
     {

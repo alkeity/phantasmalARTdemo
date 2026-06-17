@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
-using phantasmalARTdemo.Migrations;
-using phantasmalARTdemo.Models.Containers;
-using phantasmalARTdemo.Models.DTO;
-using phantasmalARTdemo.Services;
+using PhantasmalARTdemo.Migrations;
+using PhantasmalARTdemo.Models.Containers;
+using PhantasmalARTdemo.Models.DTO;
+using PhantasmalARTdemo.Services;
 using Microsoft.AspNetCore.Mvc;
 using Minio;
 
-namespace phantasmalARTdemo.Controllers
+namespace PhantasmalARTdemo.Controllers
 {
     public class HomeController : Controller
     {

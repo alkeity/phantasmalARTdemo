@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Http
-@using phantasmalARTdemo
+@using PhantasmalARTdemo
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
-@model phantasmalARTdemo.Models.DTO.ArtDTO
+@model PhantasmalARTdemo.Models.DTO.ArtDTO
 
 @{
     string? username = HttpContextAccessor.HttpContext.Session.GetString("UserName");
@@ -16,6 +16,20 @@
             </figure>
 
             @* Comments will be here *@
+            @* <section class="mb-5">
+                <div class="card bg-light">
+                    <div class="card-header">Comments:</div>
+                    <div class="card-body">
+                        <!-- Single comment-->
+                        <div class="d-flex">
+                            <div class="ms-3">
+                                <div class="fw-bold">Username</div>
+                                <p>User leaves a comment and it looks like dis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> *@
         </div>
         @* Side widget *@
         <div class="col-lg-4">

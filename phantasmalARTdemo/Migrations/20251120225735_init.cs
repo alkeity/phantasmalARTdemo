@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace phantasmalARTdemo.Migrations
+namespace PhantasmalARTdemo.Migrations
 {
     /// <inheritdoc />
     public partial class init : Migration

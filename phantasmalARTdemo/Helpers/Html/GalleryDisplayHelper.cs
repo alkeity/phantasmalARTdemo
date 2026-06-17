@@ -1,9 +1,9 @@
 ﻿using System.Text.Encodings.Web;
-using phantasmalARTdemo.Models.DTO;
+using PhantasmalARTdemo.Models.DTO;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace phantasmalARTdemo.Helpers.Html
+namespace PhantasmalARTdemo.Helpers.Html
 {
     public static class GalleryDisplayHelper
     {

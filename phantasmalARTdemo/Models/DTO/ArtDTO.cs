@@ -1,4 +1,4 @@
-﻿namespace phantasmalARTdemo.Models.DTO
+﻿namespace PhantasmalARTdemo.Models.DTO
 {
     public class ArtDTO
     {

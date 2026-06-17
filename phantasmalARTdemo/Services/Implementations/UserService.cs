@@ -1,12 +1,12 @@
-﻿using phantasmalARTdemo.Data;
-using phantasmalARTdemo.Data.Models;
-using phantasmalARTdemo.Models.DTO;
-using phantasmalARTdemo.Validators;
+﻿using PhantasmalARTdemo.Data;
+using PhantasmalARTdemo.Data.Models;
+using PhantasmalARTdemo.Models.DTO;
+using PhantasmalARTdemo.Validators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace phantasmalARTdemo.Services.Implementations
+namespace PhantasmalARTdemo.Services.Implementations
 {
     public class UserService : IUserService
     {

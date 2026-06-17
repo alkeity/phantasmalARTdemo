@@ -1,7 +1,7 @@
-﻿using phantasmalARTdemo.Data.Models;
-using phantasmalARTdemo.Models.DTO;
+﻿using PhantasmalARTdemo.Data.Models;
+using PhantasmalARTdemo.Models.DTO;
 
-namespace phantasmalARTdemo.Validators
+namespace PhantasmalARTdemo.Validators
 {
     public static class ValidatorDTO
     {

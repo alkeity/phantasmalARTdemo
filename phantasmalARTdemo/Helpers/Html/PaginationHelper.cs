@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace phantasmalARTdemo.Helpers.Html
+namespace PhantasmalARTdemo.Helpers.Html
 {
     public static class PaginationHelper
     {

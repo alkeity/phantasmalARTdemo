@@ -1,7 +1,7 @@
-﻿using phantasmalARTdemo.Data.Models;
-using phantasmalARTdemo.Models.DTO;
+﻿using PhantasmalARTdemo.Data.Models;
+using PhantasmalARTdemo.Models.DTO;
 
-namespace phantasmalARTdemo.Services
+namespace PhantasmalARTdemo.Services
 {
     public interface IUserService
     {

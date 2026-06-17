@@ -1,10 +1,10 @@
 ﻿using System.Net.Mail;
-using phantasmalARTdemo.Filters;
-using phantasmalARTdemo.Models.View;
-using phantasmalARTdemo.Services;
+using PhantasmalARTdemo.Filters;
+using PhantasmalARTdemo.Models.View;
+using PhantasmalARTdemo.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace phantasmalARTdemo.Controllers
+namespace PhantasmalARTdemo.Controllers
 {
     public class AuthController : Controller
     {

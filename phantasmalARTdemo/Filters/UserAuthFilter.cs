@@ -1,9 +1,9 @@
-﻿using phantasmalARTdemo.Models.DTO;
-using phantasmalARTdemo.Services;
+﻿using PhantasmalARTdemo.Models.DTO;
+using PhantasmalARTdemo.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace phantasmalARTdemo.Filters
+namespace PhantasmalARTdemo.Filters
 {
     public class UserAuthFilter : Attribute, IAuthorizationFilter
     {

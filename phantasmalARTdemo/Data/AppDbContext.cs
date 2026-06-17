@@ -1,14 +1,15 @@
-﻿using phantasmalARTdemo.Data.Models;
+﻿using PhantasmalARTdemo.Data.Models;
 using EntityFramework.Exceptions.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
 
-namespace phantasmalARTdemo.Data
+namespace PhantasmalARTdemo.Data
 {
     public class AppDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Art> Arts { get; set; }
+        public DbSet<ArtComment> ArtComments { get; set; }
         public DbSet<Role> Roles { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
@@ -39,9 +40,9 @@ namespace phantasmalARTdemo.Data
             modelBuilder.Entity<Art>().Property(art => art.IsDeleted).HasDefaultValue(false);
 
             // ArtComment model
-            modelBuilder.Entity<Art>().Property(art => art.CreatedAt).HasDefaultValueSql("NOW()");
-            modelBuilder.Entity<Art>().Property(art => art.UpdatedAt).HasDefaultValueSql("NOW()");
-            modelBuilder.Entity<Art>().Property(art => art.IsDeleted).HasDefaultValue(false);
+            modelBuilder.Entity<ArtComment>().Property(artComment => artComment.CreatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<ArtComment>().Property(artComment => artComment.UpdatedAt).HasDefaultValueSql("NOW()");
+            modelBuilder.Entity<ArtComment>().Property(artComment => artComment.IsDeleted).HasDefaultValue(false);
         }
     }
 }

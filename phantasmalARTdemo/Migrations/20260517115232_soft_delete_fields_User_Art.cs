@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace phantasmalARTdemo.Migrations
+namespace PhantasmalARTdemo.Migrations
 {
     /// <inheritdoc />
     public partial class soft_delete_fields_User_Art : Migration

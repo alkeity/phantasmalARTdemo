@@ -1,7 +1,7 @@
-﻿using phantasmalARTdemo.Models.Containers;
-using phantasmalARTdemo.Models.DTO;
+﻿using PhantasmalARTdemo.Models.Containers;
+using PhantasmalARTdemo.Models.DTO;
 
-namespace phantasmalARTdemo.Services
+namespace PhantasmalARTdemo.Services
 {
     public interface IArtService
     {

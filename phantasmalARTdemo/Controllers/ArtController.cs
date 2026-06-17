@@ -1,14 +1,14 @@
-﻿using phantasmalARTdemo.Data.Models;
-using phantasmalARTdemo.Filters;
-using phantasmalARTdemo.Models.Containers;
-using phantasmalARTdemo.Models.DTO;
-using phantasmalARTdemo.Models.View;
-using phantasmalARTdemo.Services;
-using phantasmalARTdemo.Validators;
+﻿using PhantasmalARTdemo.Data.Models;
+using PhantasmalARTdemo.Filters;
+using PhantasmalARTdemo.Models.Containers;
+using PhantasmalARTdemo.Models.DTO;
+using PhantasmalARTdemo.Models.View;
+using PhantasmalARTdemo.Services;
+using PhantasmalARTdemo.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace phantasmalARTdemo.Controllers
+namespace PhantasmalARTdemo.Controllers
 {
     public class ArtController : Controller
     {

@@ -1,6 +1,6 @@
-﻿using phantasmalARTdemo.Models.DTO;
+﻿using PhantasmalARTdemo.Models.DTO;
 
-namespace phantasmalARTdemo.Models.Containers
+namespace PhantasmalARTdemo.Models.Containers
 {
     public class Page<T>
     {

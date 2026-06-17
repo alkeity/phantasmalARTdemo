@@ -3,7 +3,7 @@ using Minio.DataModel;
 using Minio.DataModel.Args;
 using Minio.Exceptions;
 
-namespace phantasmalARTdemo.Services.Implementations
+namespace PhantasmalARTdemo.Services.Implementations
 {
     public class StorageService : IStorageService
     {

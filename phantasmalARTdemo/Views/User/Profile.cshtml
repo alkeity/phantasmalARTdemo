@@ -1,9 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Http
-@using phantasmalARTdemo
-@using phantasmalARTdemo.Helpers.Html
+@using PhantasmalARTdemo
+@using PhantasmalARTdemo.Helpers.Html
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
-@model phantasmalARTdemo.Models.View.ProfileModel
+@model PhantasmalARTdemo.Models.View.ProfileModel
 
 @{
     string? curUser = HttpContextAccessor.HttpContext.Session.GetString("UserName");

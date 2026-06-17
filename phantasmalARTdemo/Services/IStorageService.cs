@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Minio;
 
-namespace phantasmalARTdemo.Services
+namespace PhantasmalARTdemo.Services
 {
     public interface IStorageService
     {

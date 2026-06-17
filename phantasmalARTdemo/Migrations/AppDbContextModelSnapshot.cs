@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using phantasmalARTdemo.Data;
+using PhantasmalARTdemo.Data;
 
 #nullable disable
 
-namespace phantasmalARTdemo.Migrations
+namespace PhantasmalARTdemo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -22,42 +22,7 @@ namespace phantasmalARTdemo.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("PhantasmalARTdemo.Data.Models.ArtComment", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ArtID")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserID")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ArtID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("ArtComment");
-                });
-
-            modelBuilder.Entity("phantasmalARTdemo.Data.Models.Art", b =>
+            modelBuilder.Entity("PhantasmalARTdemo.Data.Models.Art", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -104,7 +69,48 @@ namespace phantasmalARTdemo.Migrations
                     b.ToTable("Arts");
                 });
 
-            modelBuilder.Entity("phantasmalARTdemo.Data.Models.Role", b =>
+            modelBuilder.Entity("PhantasmalARTdemo.Data.Models.ArtComment", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ArtID")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ArtID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("ArtComments");
+                });
+
+            modelBuilder.Entity("PhantasmalARTdemo.Data.Models.Role", b =>
                 {
                     b.Property<byte>("ID")
                         .HasColumnType("smallint");
@@ -118,7 +124,7 @@ namespace phantasmalARTdemo.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("phantasmalARTdemo.Data.Models.User", b =>
+            modelBuilder.Entity("PhantasmalARTdemo.Data.Models.User", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -181,7 +187,7 @@ namespace phantasmalARTdemo.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("phantasmalARTdemo.Data.Models.UserProfile", b =>
+            modelBuilder.Entity("PhantasmalARTdemo.Data.Models.UserProfile", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -201,15 +207,26 @@ namespace phantasmalARTdemo.Migrations
                     b.ToTable("UserProfiles");
                 });
 
+            modelBuilder.Entity("PhantasmalARTdemo.Data.Models.Art", b =>
+                {
+                    b.HasOne("PhantasmalARTdemo.Data.Models.User", "User")
+                        .WithMany("UserArt")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("PhantasmalARTdemo.Data.Models.ArtComment", b =>
                 {
-                    b.HasOne("phantasmalARTdemo.Data.Models.Art", "Art")
+                    b.HasOne("PhantasmalARTdemo.Data.Models.Art", "Art")
                         .WithMany("Comments")
                         .HasForeignKey("ArtID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("phantasmalARTdemo.Data.Models.User", "User")
+                    b.HasOne("PhantasmalARTdemo.Data.Models.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -220,20 +237,9 @@ namespace phantasmalARTdemo.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("phantasmalARTdemo.Data.Models.Art", b =>
+            modelBuilder.Entity("PhantasmalARTdemo.Data.Models.User", b =>
                 {
-                    b.HasOne("phantasmalARTdemo.Data.Models.User", "User")
-                        .WithMany("UserArt")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("phantasmalARTdemo.Data.Models.User", b =>
-                {
-                    b.HasOne("phantasmalARTdemo.Data.Models.Role", "UserRole")
+                    b.HasOne("PhantasmalARTdemo.Data.Models.Role", "UserRole")
                         .WithMany("Users")
                         .HasForeignKey("RoleID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -242,28 +248,28 @@ namespace phantasmalARTdemo.Migrations
                     b.Navigation("UserRole");
                 });
 
-            modelBuilder.Entity("phantasmalARTdemo.Data.Models.UserProfile", b =>
+            modelBuilder.Entity("PhantasmalARTdemo.Data.Models.UserProfile", b =>
                 {
-                    b.HasOne("phantasmalARTdemo.Data.Models.User", "User")
+                    b.HasOne("PhantasmalARTdemo.Data.Models.User", "User")
                         .WithOne("Profile")
-                        .HasForeignKey("phantasmalARTdemo.Data.Models.UserProfile", "UserID")
+                        .HasForeignKey("PhantasmalARTdemo.Data.Models.UserProfile", "UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("phantasmalARTdemo.Data.Models.Art", b =>
+            modelBuilder.Entity("PhantasmalARTdemo.Data.Models.Art", b =>
                 {
                     b.Navigation("Comments");
                 });
 
-            modelBuilder.Entity("phantasmalARTdemo.Data.Models.Role", b =>
+            modelBuilder.Entity("PhantasmalARTdemo.Data.Models.Role", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("phantasmalARTdemo.Data.Models.User", b =>
+            modelBuilder.Entity("PhantasmalARTdemo.Data.Models.User", b =>
                 {
                     b.Navigation("Comments");
 

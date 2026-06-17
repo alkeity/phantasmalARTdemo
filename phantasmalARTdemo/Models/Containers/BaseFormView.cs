@@ -1,4 +1,4 @@
-﻿namespace phantasmalARTdemo.Models.Containers
+﻿namespace PhantasmalARTdemo.Models.Containers
 {
     public class BaseFormView<T>
     {
