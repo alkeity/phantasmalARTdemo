@@ -13,17 +13,19 @@ namespace PhantasmalARTdemo.Controllers
     public class ArtController : Controller
     {
         private IArtService _artService;
+        private IArtCommentService _artCommentService;
         private IUserService _userService;
-        IStorageService _storageService;
+        private IStorageService _storageService;
         private IHttpContextAccessor _contextAccessor;
         private readonly string _storagePath;
 
         public ArtController(
-            IArtService artService, IUserService userService, 
+            IArtService artService, IArtCommentService artCommentService, IUserService userService, 
             IStorageService storageService, IHttpContextAccessor contextAccessor, 
             IConfiguration config)
         {
             _artService = artService;
+            _artCommentService = artCommentService;
             _userService = userService;
             _storageService = storageService;
             _contextAccessor = contextAccessor;
@@ -50,14 +52,20 @@ namespace PhantasmalARTdemo.Controllers
         [Route("{username}/gallery/{artID:Guid}")]
         public IActionResult ArtDisplay(string username, Guid artID)
         {
+            ArtDTO art;
             try
             {
-                return View(_artService.GetArt(artID));
+                art = _artService.GetArt(artID);
             }
             catch (KeyNotFoundException ex)
             {
                 return NotFound();
             }
+            ArtDisplayView artView = new ArtDisplayView()
+            {
+                Art = art
+            };
+            return View(artView);
         }
 
         [UserAuthFilter]

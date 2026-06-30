@@ -56,6 +56,8 @@ namespace PhantasmalARTdemo.Services.Implementations
             return page;
         }
 
+        // add new entry to database
+        // artID - external GUID, not primary key
         public void NewComment(ArtCommentDTO comment, Guid artID)
         {
             _db.ArtComments.Add(
